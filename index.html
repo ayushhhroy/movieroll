@@ -33,19 +33,6 @@
             background-color: #1a1a1a;
         }
         
-        /* * HATA DIYA GAYA .fade-right CSS 
-         * Kyunki user ko woh "shadow" nahi chahiye tha.
-         */
-        /* .fade-right {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 5rem;
-            height: 100%;
-            background: linear-gradient(to right, transparent, #141414);
-            pointer-events: none;
-        } 
-        */
     </style>
 </head>
 <body class="antialiased">
@@ -131,30 +118,34 @@
                     <!-- UPDATE: Ab <a> tag (link) wapas laga diya hai -->
                    <a href="animal.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
                         <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="animal-img.webp" alt="Movie 1" class="w-full h-auto object-cover">
+                            <!-- UPDATE: `h-auto` ko `aspect-[2/3]` se badal diya gaya hai taaki sabhi images ka size same rahe -->
+                            <img src="animal-img.webp" alt="Movie 1" class="w-full object-cover aspect-[2/3]">
                         </div>
                     </a>
                     <!-- === END MOVIE CARD === -->
 
                     <!-- Other mock movie cards -->
                     <!-- UPDATE: Sabhi cards par <a> tag laga diya hai -->
-                     <a href="animal.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
-                        <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="animal-img.webp" alt="Movie 2" class="w-full h-auto object-cover">
+                     
+                     <a href="pathan-img.webp" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <!-- UPDATE: `h-auto` ko `aspect-[2/3]` se badal diya gaya hai -->
+                            <img src="pathan-img.webp" alt="Movie 3" class="w-full object-cover aspect-[2/3]">
                         </div>
                     </a>
-                     <a href="animal.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
-                        <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="animal-img.webp" alt="Movie 3" class="w-full h-auto object-cover">
+                     <a href="brahmastra1-img.webp" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <!-- UPDATE: `h-auto` ko `aspect-[2/3]` se badal diya gaya hai -->
+                            <img src="brahmastra-img.webp" alt="Movie 4" class="w-full object-cover aspect-[2/3]">
                         </div>
                     </a>
-                     <a href="animal.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
-                        <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="animal-img.webp" alt="Movie 4" class="w-full h-auto object-cover">
+                    <a href="jawan.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <!-- UPDATE: `h-auto` ko `aspect-[2/3]` se badal diya gaya hai -->
+                            <img src="Jawan-img.webp" alt="Movie 2" class="w-full object-cover aspect-[2/3]">
                         </div>
                     </a>
                 </div>
-                <!-- === HATA DIYA GAYA: <div class="fade-right"></div> === -->
             </div>
         </section>
 
@@ -165,22 +156,24 @@
                 <div class="movie-row flex overflow-x-auto overflow-y-hidden space-x-3 sm:space-x-4 p-2 -m-2">
                     <!-- UPDATE: Sabhi cards par <a> tag laga diya hai -->
                      <a href="animal.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
-                        <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="httpsimg.co/400x600/444/EEE?text=" alt="Action 1" class="w-full h-auto object-cover">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <!-- UPDATE: `h-auto` ko `aspect-[2/3]` se badal diya gaya hai -->
+                            <img src="https:placehold.co/400x600/444/EEE?text=" alt="Action 1" class="w-full object-cover aspect-[2/3]">
                         </div>
                     </a>
                      <a href="animal.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
-                        <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="httpsimg.co/400x600/555/EEE?text=" alt="Action 2" class="w-full h-auto object-cover">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <!-- UPDATE: `h-auto` ko `aspect-[2/3]` se badal diya gaya hai -->
+                            <img src="https:placehold.co/400x600/555/EEE?text=" alt="Action 2" class="w-full object-cover aspect-[2/3]">
                         </div>
                     </a>
                      <a href="animal.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
-                        <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="httpsimg.co/400x600/666/EEE?text=" alt="Action 3" class="w-full h-auto object-cover">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <!-- UPDATE: `h-auto` ko `aspect-[2/3]` se badal diya gaya hai -->
+                            <img src="https:placehold.co/400x600/666/EEE?text=" alt="Action 3" class="w-full object-cover aspect-[2/3]">
                         </div>
                     </a>
                 </div>
-                <!-- === HATA DIYA GAYA: <div class="fade-right"></div> === -->
             </div>
         </section>
 
