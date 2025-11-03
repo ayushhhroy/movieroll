@@ -8,13 +8,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Google Font: Inter -->
-    <!-- FIX 1: 'httpss://' को 'https://' में बदला गया -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <!-- Font Awesome (Future use) -->
-    <!-- FIX 2: 'httpss://' को 'https://' में बदला गया -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     <style>
@@ -97,7 +95,7 @@
             <!-- Description / Plot Summary -->
             <p class="text-lg text-gray-200 mb-8 leading-relaxed">
                 A man is driven by a personal vendetta to rectify the wrongs in society, while keeping a promise made years ago. He comes up against a monstrous outlaw with no fear, who has caused suffering to many.
-            </d>
+            </p> <!-- FIX: <d> को </p> में बदल दिया गया -->
 
             <!-- About / Cast / Director -->
             <div class="mt-12 text-gray-400">
@@ -111,7 +109,7 @@
     <!-- Footer -->
     <footer class="container mx-auto px-4 sm:px-6 py-8 mt-12 border-t border-gray-800">
         <div class="text-center text-gray-500 text-sm">
-            &copy; 2025 MOVIEROLL. All rights reserved. (Demo website)
+            Movieroll Exclusive Premiere
         </div>
     </footer>
 
@@ -125,9 +123,9 @@
 
         function handleFullscreenChange() {
             const isFullscreen = document.fullscreenElement || 
-                                 document.webkitFullscreenElement || 
-                                 document.mozFullScreenElement ||
-                                 document.msFullscreenElement;
+                                   document.webkitFullscreenElement || 
+                                   document.mozFullScreenElement ||
+                                   document.msFullscreenElement;
 
             if (isFullscreen) {
                 // On entering fullscreen, lock to landscape
