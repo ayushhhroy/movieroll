@@ -82,15 +82,13 @@
     </nav>
 
     <!-- Hero Section -->
-    <!-- UPDATE: Mobile padding bottom badha di hai (pb-28) -->
     <header class="relative h-[70vh] md:h-[80vh] min-h-[500px] flex items-end justify-start text-white pb-28 md:pb-32">
         <!-- Background Image -->
         <div class="absolute inset-0">
-            <!-- FIX 1: 'bgimage.png' ko ek working placeholder se badal diya hai taki image dikhe -->
             <img src="bgimage.png" 
                  alt="Featured Movie Banner" 
                  class="w-full h-full object-cover"
-                 onerror="this.src='https://placehold.co/1600x900/111/444?text=Featured+Movie+Banner'">
+                 onerror="this.src='https://placehold.co/1600x900/111/444?text='">
             <!-- Gradient Overlay: Top-to-Bottom -->
             <div class="absolute inset-0 bg-gradient-to-t from-[#141414] via-transparent/50 to-transparent"></div>
             <!-- Gradient Overlay: Left-to-Right -->
@@ -100,13 +98,11 @@
         </div>
         
         <!-- Hero Content -->
-        <!-- UPDATE: z-index 20 kar diya hai taaki yeh main content (z-10) ke oopar rahe -->
         <div class="relative z-20 container mx-auto px-4 sm:px-6 md:px-12 max-w-2xl">
             <h2 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-2">Featured Movie Title</h2>
             <p class="text-base sm:text-lg mb-8 leading-relaxed">
                 This is a gripping description of the featured movie. It's exciting, dramatic, and makes you want to watch it right now.
             </p>
-            <!-- Button spacing badha diya hai (space-x-6) -->
             <div class="flex space-x-6"> 
                 <a href="#movie-section" class="bg-white text-black px-6 sm:px-8 py-3 rounded-md text-lg font-bold flex items-center hover:bg-gray-200 transition-colors">
                     <svg xmlns="https://www.w3.org/2000/svg" class="h-6 w-6 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -119,8 +115,6 @@
     </header>
 
     <!-- Main Content Area - Movie Rows -->
-    <!-- UPDATE: z-index 10 kar diya hai (header ke content se kam) -->
-    <!-- UPDATE: Mobile negative margin kam kar diya hai (-mt-16) -->
     <main id="movie-section" class="container mx-auto px-4 sm:px-6 md:px-12 pb-16 -mt-16 md:-mt-36 z-10 relative">
         
         <!-- Row 1: Trending Now -->
@@ -129,39 +123,32 @@
             <div class="relative">
                 <div class="movie-row flex overflow-x-auto overflow-y-hidden space-x-3 sm:space-x-4 p-2 -m-2">
                     
-                    <!-- === MOVIE CARD: ANIMAL === -->
-                    <a href="animal.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
+                    <!-- === MOVIE CARD === -->
+                    <!-- UPDATE: Ab <a> tag (link) wapas laga diya hai -->
+                   <a href="animal.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
                         <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <!-- FIX 2: 'animalIMAGE.webp' ko ek working placeholder se badal diya hai -->
-                            <img src="animal-img.webp" 
-                                 alt="Animal Movie Poster"
-                                 class="w-full h-auto object-cover"
-                                 onerror="this.src='https://placehold.co/400x600/333/FFF?text=Animal'">
+                            <img src="animal-img.webp" alt="Movie 1" class="w-full h-auto object-cover">
                         </div>
-                        <p class="mt-2 text-center font-semibold text-gray-200 group-hover:text-white text-sm sm:text-base">Animal</p>
                     </a>
                     <!-- === END MOVIE CARD === -->
 
                     <!-- Other mock movie cards -->
-                    <div class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
+                    <!-- UPDATE: Sabhi cards par <a> tag laga diya hai -->
+                    <a href="animal.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
                         <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="https://placehold.co/400x600/444/EEE?text=Movie+2" alt="Movie 2" class="w-full h-auto object-cover">
+                            <img src="animal-img.webp" alt="Movie 2" class="w-full h-auto object-cover">
                         </div>
-                        <p class="mt-2 text-center font-semibold text-gray-200 group-hover:text-white text-sm sm:text-base">Movie Title 2</p>
-                    </div>
-                    <div class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
+                    </a>
+                    <a href="animal.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
                         <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <!-- FIX 3: Yahaan 'httpsa://' (galat typo) tha, ise 'https://' kar diya hai -->
-                            <img src="https://placehold.co/400x600/555/EEE?text=Movie+3" alt="Movie 3" class="w-full h-auto object-cover">
+                            <img src="animal-img.webp" alt="Movie 3" class="w-full h-auto object-cover">
                         </div>
-                        <p class="mt-2 text-center font-semibold text-gray-200 group-hover:text-white text-sm sm:text-base">Movie Title 3</p>
-                    </div>
-                    <div class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
+                    </a>
+                    <a href="animal.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
                         <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="https://placehold.co/400x600/666/EEE?text=Movie+4" alt="Movie 4" class="w-full h-auto object-cover">
+                            <img src="animal-img.webp" alt="Movie 4" class="w-full h-auto object-cover">
                         </div>
-                        <p class="mt-2 text-center font-semibold text-gray-200 group-hover:text-white text-sm sm:text-base">Movie Title 4</p>
-                    </div>
+                    </a>
                 </div>
                 <div class="fade-right"></div>
             </div>
@@ -172,24 +159,22 @@
             <h2 class="text-2xl font-bold mb-3">Action & Adventure</h2>
             <div class="relative">
                 <div class="movie-row flex overflow-x-auto overflow-y-hidden space-x-3 sm:space-x-4 p-2 -m-2">
-                    <div class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
+                    <!-- UPDATE: Sabhi cards par <a> tag laga diya hai -->
+                    <a href="animal.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
                         <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="https://placehold.co/400x600/444/EEE?text=Action+1" alt="Action 1" class="w-full h-auto object-cover">
+                            <img src="httpsimg.co/400x600/444/EEE?text=" alt="Action 1" class="w-full h-auto object-cover">
                         </div>
-                        <p class="mt-2 text-center font-semibold text-gray-200 group-hover:text-white text-sm sm:text-base">Action Movie 1</p>
-                    </div>
-                     <div class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
+                    </a>
+                     <a href="animal.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
                         <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="https://placehold.co/400x600/555/EEE?text=Action+2" alt="Action 2" class="w-full h-auto object-cover">
+                            <img src="httpsimg.co/400x600/555/EEE?text=" alt="Action 2" class="w-full h-auto object-cover">
                         </div>
-                        <p class="mt-2 text-center font-semibold text-gray-200 group-hover:text-white text-sm sm:text-base">Action Movie 2</p>
-                    </div>
-                     <div class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
+                    </a>
+                     <a href="animal.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
                         <div class="rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="https://placehold.co/400x600/666/EEE?text=Action+3" alt="Action 3" class="w-full h-auto object-cover">
+                            <img src="httpsimg.co/400x600/666/EEE?text=" alt="Action 3" class="w-full h-auto object-cover">
                         </div>
-                        <p class="mt-2 text-center font-semibold text-gray-200 group-hover:text-white text-sm sm:text-base">Action Movie 3</p>
-                    </div>
+                    </a>
                 </div>
                 <div class="fade-right"></div>
             </div>
