@@ -19,17 +19,51 @@
       background-color: #333;
       border: 1px solid #555;
       border-radius: .375rem;
-      padding: 1rem; /* Increased padding */
+      padding: 1rem;
       width: 100%;
       color: #fff;
       transition: all 0.2s ease-in-out;
     }
     .form-input:focus {
       outline: none;
-      border-color: #333; /* Hide border on focus */
-      box-shadow: 0 0 0 3px #e50914; /* Use ring/shadow instead */
+      border-color: #333;
+      box-shadow: 0 0 0 3px #e50914;
     }
-    .form-input::placeholder { color: #888; } /* Lighter placeholder */
+    .form-input::placeholder { color: #888; }
+
+    /* --- NEW: OTP Input Styles --- */
+    .otp-input {
+      width: 2.75rem; /* 44px */
+      height: 2.75rem; /* 44px */
+      text-align: center;
+      font-size: 1.25rem; /* 20px */
+      font-weight: 700;
+      padding: 0;
+      border-radius: .375rem;
+      background-color: #333;
+      border: 1px solid #555;
+      color: #fff;
+      transition: all 0.2s ease-in-out;
+    }
+    .otp-input:focus {
+      outline: none;
+      border-color: #333;
+      box-shadow: 0 0 0 3px #e50914;
+    }
+    
+    /* Responsive adjustments */
+    @media (min-width: 640px) {
+      .otp-input {
+        width: 3.5rem; /* 56px */
+        height: 3.5rem; /* 56px */
+        font-size: 1.5rem; /* 24px */
+      }
+    }
+
+    /* --- REMOVED CSS BLOCK --- 
+       The .otp-input fields are now type="tel", 
+       so the rules to hide number spinners are no longer needed.
+    */
 
     /* --- Animation: Page Load Fade-in --- */
     @keyframes fadeInUp {
@@ -49,6 +83,19 @@
     .animate-message {
       animation: slideInFade 0.4s ease-out forwards;
     }
+
+    /* --- NEW: Loader Spinner --- */
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .loader-spinner {
+      width: 4rem; /* 64px */
+      height: 4rem; /* 64px */
+      border: 6px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #e50914;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
   </style>
 </head>
 <body class="antialiased">
@@ -61,10 +108,8 @@
         if (session) {
           const data = JSON.parse(session);
           if (data.loggedIn === true && data.expiry && data.expiry > Date.now()) {
-            // User has a valid session, redirect to homepage
             window.top.location.href = 'homepage.html';
           } else {
-            // Session invalid or expired, remove it
             localStorage.removeItem('movieroll_session');
           }
         }
@@ -75,10 +120,10 @@
   </script>
   <!-- ===== END OF SESSION CHECK SCRIPT ===== -->
 
-  <!-- Navbar with larger logo and padding -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm shadow-lg p-5 sm:p-7">
+  <!-- Navbar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm shadow-lg p-4 sm:p-7">
     <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-4xl font-extrabold text-red-600 tracking-wider">MOVIEROLL</h1>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-red-600 tracking-wider">MOVIEROLL</h1>
     </div>
   </nav>
 
@@ -92,13 +137,8 @@
     </div>
 
     <!-- Form Container -->
-    <!-- Larger container, padding, and border-radius -->
-    <div class="form-container relative z-10 w-full max-w-xl bg-black/80 backdrop-blur-md rounded-2xl shadow-2xl p-8 sm:p-12">
-      <!-- 
-        UPDATED TABS: 
-        - "Sign Up" is now the default.
-        - "Sign In" is the secondary option.
-      -->
+    <div class="form-container relative z-10 w-full max-w-xl bg-black/80 backdrop-blur-md rounded-2xl shadow-2xl p-6 sm:p-12">
+      <!-- Tabs -->
       <div class="flex mb-8 border-b border-gray-700">
         <button id="show-apply-btn" class="flex-1 py-3 text-lg font-bold text-white border-b-4 border-red-600">Sign Up (₹10/mo)</button>
         <button id="show-login-btn" class="flex-1 py-3 text-lg font-medium text-gray-400 border-b-4 border-transparent hover:text-white transition-colors">Sign In</button>
@@ -110,14 +150,22 @@
       <!-- LOGIN FORM (Now hidden by default) -->
       <div id="login-view" class="hidden">
         <form id="login-form" class="space-y-6">
-          <h2 class="text-4xl font-bold text-center mb-8">Sign In to Your Account</h2>
+          <h2 class="text-3xl sm:text-4xl font-bold text-center mb-8">Sign In to Your Account</h2>
           <div>
             <label class="block text-sm mb-2 font-medium text-gray-300">Username</label>
             <input id="username" class="form-input" placeholder="Enter username" required />
           </div>
           <div>
-            <label class="block text-sm mb-2 font-medium text-gray-300">Password</label>
-            <input id="password" type="password" class="form-input" placeholder="Enter password" required />
+            <label class="block text-sm mb-2 font-medium text-gray-300">Password (6-Digit PIN)</label>
+            <!-- NEW: 6-Digit OTP Container -->
+            <div id="otp-container" class="flex justify-between space-x-2 sm:space-x-3">
+              <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" required />
+              <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" required />
+              <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" required />
+              <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" required />
+              <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" required />
+              <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" required />
+            </div>
           </div>
           <button id="login-submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white text-lg font-bold py-4 px-4 rounded-md transition-all duration-150 active:scale-[.98]">Sign In & Watch</button>
         </form>
@@ -126,27 +174,27 @@
       <!-- APPLY FORM (Now visible by default) -->
       <div id="apply-view">
         <form id="apply-form" class="space-y-6">
-          <h2 class="text-4xl font-bold text-center mb-8">Sign Up for Access (₹10/Month)</h2>
+          <h2 class="text-3xl sm:text-4xl font-bold text-center mb-8">Sign Up for Access (₹10/Month)</h2>
           <div>
             <label class="block text-sm mb-2 font-medium text-gray-300">Full Name</label>
             <input id="apply-name" class="form-input" placeholder="Your full name" required />
           </div>
           <div>
             <label class="block text-sm mb-2 font-medium text-gray-300">WhatsApp Number</label>
-            <input id="apply-phone" class="form-input" placeholder="10-digit number" required />
+            <!-- UPDATED: type="tel" and inputmode="numeric" for number pad -->
+            <input id="apply-phone" type="tel" inputmode="numeric" pattern="[0-9]{10}" title="Please enter a 10-digit number" class="form-input" placeholder="10-digit number" required />
           </div>
           <div>
             <label class="block text-sm mb-2 font-medium text-gray-300">Email Address</label>
             <input id="apply-email" type="email" class="form-input" placeholder="your@email.com" required />
           </div>
-          <!-- Fixed typo </tton> -> </button> -->
           <button id="apply-submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white text-lg font-bold py-4 px-4 rounded-md transition-all duration-150 active:scale-[.98]">Sign Up & Apply</button>
         </form>
       </div>
       
       <!-- SUCCESS VIEW -->
       <div id="success-view" class="hidden text-center">
-        <h2 class="text-4xl font-bold text-center mb-6 text-green-400">Access Granted!</h2>
+        <h2 class="text-3xl sm:text-4xl font-bold text-center mb-6 text-green-400">Access Granted!</h2>
         <p class="text-lg text-gray-300 mb-8">Your access is verified. You will be redirected to homepage in <span id="countdown">5</span> seconds.</p>
         <button id="go-to-homepage-btn" class="w-full bg-green-600 hover:bg-green-700 text-white text-lg font-bold py-4 px-4 rounded-md transition-all duration-150 active:scale-[.98]">
           Let's Go! Start Watching
@@ -154,6 +202,12 @@
       </div>
     </div>
   </main>
+
+  <!-- NEW: Full-screen Loader Overlay -->
+  <div id="loader-overlay" class="hidden fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center">
+    <div class="loader-spinner"></div>
+    <p id="loader-text" class="text-white text-xl font-bold mt-6">Checking...</p>
+  </div>
 
   <script>
     const APPLY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl7G-K7CHvszrrmUeH1_kVjRLISXDpkhjwXkbIsqcZ4QI5PN5aKrQQBjeM6iMbdrRc/exec';
@@ -167,26 +221,33 @@
     const successView = document.getElementById('success-view'); 
     const messageBox = document.getElementById('message-box');
     const countdownElement = document.getElementById('countdown');
+    const otpContainer = document.getElementById('otp-container');
+    const loaderOverlay = document.getElementById('loader-overlay');
+    const loaderText = document.getElementById('loader-text');
+
+    // --- NEW: Loader Functions ---
+    function showLoader(text) {
+      loaderText.textContent = text;
+      loaderOverlay.classList.remove('hidden');
+    }
+    function hideLoader() {
+      loaderOverlay.classList.add('hidden');
+    }
 
     // --- Show Message Function ---
     function showMessage(type, text) {
-      // Base classes
       messageBox.className = 'p-4 mb-4 rounded-md text-sm text-white';
-      // Add color class
       messageBox.classList.add(type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600');
       messageBox.textContent = text;
       
-      // ANIMATION: Add animation class
       messageBox.classList.remove('hidden');
       messageBox.classList.add('animate-message');
       
-      // Remove animation class after it finishes to allow re-triggering
       messageBox.addEventListener('animationend', () => {
           messageBox.classList.remove('animate-message');
-      }, { once: true }); // 'once: true' automatically removes the listener
+      }, { once: true });
     }
     
-    // --- Hide Message Function (used by tabs) ---
     function hideMessage() {
       messageBox.classList.add('hidden');
       messageBox.classList.remove('animate-message');
@@ -214,11 +275,9 @@
       applyView.classList.add('hidden');
       successView.classList.add('hidden');
       
-      // Style active tab (Sign In)
       showLoginBtn.classList.add('text-white', 'font-bold', 'border-red-600');
       showLoginBtn.classList.remove('text-gray-400', 'font-medium', 'border-transparent');
       
-      // Style inactive tab (Sign Up)
       showApplyBtn.classList.add('text-gray-400', 'font-medium', 'border-transparent');
       showApplyBtn.classList.remove('text-white', 'font-bold', 'border-red-600');
       
@@ -230,11 +289,9 @@
       loginView.classList.add('hidden');
       successView.classList.add('hidden');
       
-      // Style active tab (Sign Up)
       showApplyBtn.classList.add('text-white', 'font-bold', 'border-red-600');
       showApplyBtn.classList.remove('text-gray-400', 'font-medium', 'border-transparent');
 
-      // Style inactive tab (Sign In)
       showLoginBtn.classList.add('text-gray-400', 'font-medium', 'border-transparent');
       showLoginBtn.classList.remove('text-white', 'font-bold', 'border-red-600');
       
@@ -245,12 +302,15 @@
     document.getElementById('apply-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('apply-submit-btn');
-      btn.disabled = true; btn.textContent = 'Submitting...';
-      showMessage('info', 'Sending your application...');
+      btn.disabled = true;
+      // UPDATED: Show loader instead of inline message
+      showLoader('Submitting your application...');
+      hideMessage();
+
       try {
         const res = await fetch(APPLY_SCRIPT_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'text/plain' }, // Keep as text/plain if your script expects it
+          headers: { 'Content-Type': 'text/plain' },
           body: JSON.stringify({
             name: document.getElementById('apply-name').value,
             phone: document.getElementById('apply-phone').value,
@@ -263,20 +323,37 @@
           e.target.reset();
         } else throw new Error(data.message || 'Unknown error');
       } catch (err) {
-        showMessage('error', 'Error submitting form. Please try again.');
+        showMessage('error', `Error: ${err.message}. Please try again.`);
         console.error('Apply error:', err);
       }
-      btn.disabled = false; btn.textContent = 'Sign Up & Apply';
+      // UPDATED: Hide loader and re-enable button
+      hideLoader();
+      btn.disabled = false;
     });
 
     // --- Login Form ---
     document.getElementById('login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('login-submit-btn');
-      btn.disabled = true; btn.textContent = 'Verifying...';
-      showMessage('info', 'Checking your details...');
+      hideMessage();
+      
+      // NEW: Get password from OTP boxes
+      const otpInputs = [...otpContainer.querySelectorAll('.otp-input')];
+      let password = '';
+      otpInputs.forEach(input => {
+        password += input.value;
+      });
 
-      // Clear any old session first
+      // NEW: Validate OTP length
+      if (password.length !== 6) {
+        showMessage('error', 'Please enter all 6 digits of your password.');
+        return;
+      }
+
+      btn.disabled = true;
+      // UPDATED: Show loader
+      showLoader('Verifying your details...');
+      
       try {
         localStorage.removeItem('movieroll_session');
       } catch (lsError) {
@@ -288,23 +365,23 @@
       try {
         const res = await fetch(LOGIN_SCRIPT_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'text/plain' }, // Keep as text/plain if your script expects it
+          headers: { 'Content-Type': 'text/plain' },
           body: JSON.stringify({
             username: username,
-            password: document.getElementById('password').value
+            password: password // Use the combined password
           })
         });
         
         if (!res.ok) {
-            throw new Error(`Network response was not ok (status: ${res.status})`);
+            throw new Error(`Network error (status: ${res.status})`);
         }
 
         const data = await res.json();
         
         if (data.result === 'success') {
+          // On success, loader will be hidden by the view change
           showMessage('success', 'Success! Your access is confirmed.');
           
-          // Set a 30-day expiry for the session
           const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days
           try {
             localStorage.setItem('movieroll_session', JSON.stringify({ 
@@ -314,26 +391,27 @@
             }));
           } catch (lsError) {
             console.warn("Could not set localStorage:", lsError);
-            // Non-critical error, but good to know
             showMessage('error', 'Login OK, but session could not be saved.');
           }
           
-          // Hide login form and show success view
           loginView.classList.add('hidden');
           applyView.classList.add('hidden');
           successView.classList.remove('hidden');
           
-          // Start countdown for auto-redirect
           startCountdown();
+          // Keep loader on, it will be covered by the success view
           
         } else {
+          // On fail, hide loader and show error
+          hideLoader();
           throw new Error(data.message || 'Invalid username or password');
         }
       } catch (err) {
+        // On network error, hide loader and show error
+        hideLoader();
         showMessage('error', err.message);
         console.error('Login error:', err);
         btn.disabled = false;
-        btn.textContent = 'Sign In & Watch';
       }
     });
 
@@ -342,6 +420,60 @@
         window.top.location.href = 'homepage.html';
     });
 
+    // --- NEW: OTP Input Logic ---
+    otpContainer.addEventListener('input', (e) => {
+      const target = e.target;
+      const val = target.value;
+      
+      if (isNaN(val)) {
+        target.value = '';
+        return;
+      }
+
+      if (val != '') {
+        const next = target.nextElementSibling;
+        if (next) {
+          next.focus();
+        }
+      }
+    });
+
+    otpContainer.addEventListener('keydown', (e) => {
+      const target = e.target;
+      
+      if (e.key === 'Backspace' && target.value === '') {
+        const prev = target.previousElementSibling;
+        if (prev) {
+          prev.focus();
+        }
+      }
+    });
+
+    otpContainer.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const pasteData = e.clipboardData.getData('text').trim().slice(0, 6);
+        if (!/^\d+$/.test(pasteData)) {
+            return; // Paste data is not numeric
+        }
+        
+        const inputs = [...otpContainer.querySelectorAll('.otp-input')];
+        pasteData.split('').forEach((char, index) => {
+            if (inputs[index]) {
+                inputs[index].value = char;
+            }
+        });
+
+        // Focus the last input that was filled, or the next empty one
+        const lastFilledIndex = Math.min(pasteData.length, inputs.length) - 1;
+        if (pasteData.length < inputs.length) {
+            inputs[lastFilledIndex + 1].focus();
+        } else {
+            inputs[lastFilledIndex].focus();
+        }
+    });
+
+
   </script>
 </body>
 </html>
+
