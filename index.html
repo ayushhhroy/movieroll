@@ -151,7 +151,7 @@
     </main>
 
     <!-- Footer -->
-        <script>
+    <script>
         // --- URLs for Google Apps Script ---
         // INSTRUCTIONS: Yeh URLs aapko Google Apps Script deploy karne ke baad milengi.
         // Unhe yahan paste karein.
@@ -216,7 +216,8 @@
         // --- Apply Form Submission (Form 2) ---
         applyForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            if (APPLY_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbzfdf0iSwrNNyIYomUInGOAh2B-1_Qypto_6r0G9w3KUeXN4G_ERY6cw09oqLAM_CCy/exec') {
+            // --- Check for placeholder URL ---
+            if (APPLY_SCRIPT_URL === 'PASTE_YOUR_APPLY_SCRIPT_URL_HERE' || APPLY_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbzfdf0iSwrNNyIYomUInGOAh2B-1_Qypto_6r0G9w3KUeXN4G_ERY6cw09oqLAM_CCy/exec') {
                 showMessage('error', 'Site admin ne backend setup nahi kiya hai.');
                 return;
             }
@@ -229,14 +230,17 @@
             applySubmitBtn.textContent = 'Submitting...';
             showMessage('info', 'Sending your application...');
 
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('phone', phone);
-            formData.append('email', email);
+            // --- FIX: Send data as JSON, not FormData ---
+            const requestData = {
+                name: name,
+                phone: phone,
+                email: email
+            };
 
             fetch(APPLY_SCRIPT_URL, {
                 method: 'POST',
-                body: formData,
+                // body: formData, // OLD - This was sending FormData
+                body: JSON.stringify(requestData), // NEW - Send as JSON string
             })
             .then(res => res.json())
             .then(data => {
@@ -260,7 +264,8 @@
         // --- Login Form Submission (Form 1) ---
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            if (LOGIN_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbwoaXBeA1LlLN9OGI6dRGclftzQC7aJngFyec1xJ9c101ToMo8XS7xeApfZMePi0LTD/exec') {
+            // --- Check for placeholder URL ---
+            if (LOGIN_SCRIPT_URL === 'PASTE_YOUR_LOGIN_SCRIPT_URL_HERE' || LOGIN_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbwoaXBeA1LlLN9OGI6dRGclftzQC7aJngFyec1xJ9c101ToMo8XS7xeApfZMePi0LTD/exec') {
                 showMessage('error', 'Site admin ne backend setup nahi kiya hai.');
                 return;
             }
@@ -272,13 +277,16 @@
             loginSubmitBtn.textContent = 'Verifying...';
             showMessage('info', 'Checking your details...');
 
-            const formData = new FormData();
-            formData.append('username', username);
-            formData.append('password', password);
+            // --- FIX: Send data as JSON, not FormData ---
+            const requestData = {
+                username: username,
+                password: password
+            };
 
             fetch(LOGIN_SCRIPT_URL, {
                 method: 'POST',
-                body: formData,
+                // body: formData, // OLD - This was sending FormData
+                body: JSON.stringify(requestData), // NEW - Send as JSON string
             })
             .then(res => res.json())
             .then(data => {
