@@ -16,6 +16,25 @@
     .form-input{background-color:#333;border:1px solid #555;border-radius:.375rem;padding:.75rem 1rem;width:100%;color:#fff;transition:.2s;}
     .form-input:focus{outline:none;border-color:#e50914;box-shadow:0 0 0 2px rgba(229,9,20,.3);}
     .form-input::placeholder{color:#999;}
+
+    /* --- Animation: Page Load Fade-in --- */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .form-container {
+      animation: fadeInUp 0.6s ease-out 0.2s forwards;
+      opacity: 0; /* Start hidden for animation */
+    }
+    
+    /* --- Animation: Message Box --- */
+    @keyframes slideInFade {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-message {
+      animation: slideInFade 0.4s ease-out forwards;
+    }
   </style>
 </head>
 <body class="antialiased">
@@ -28,8 +47,10 @@
         if (session) {
           const data = JSON.parse(session);
           if (data.loggedIn === true && data.expiry && data.expiry > Date.now()) {
+            // User has a valid session, redirect to homepage
             window.top.location.href = 'homepage.html';
           } else {
+            // Session invalid or expired, remove it
             localStorage.removeItem('movieroll_session');
           }
         }
@@ -49,14 +70,16 @@
   <main class="relative min-h-screen flex items-center justify-center py-24 px-4 overflow-hidden">
     <!-- Background Image and Overlays -->
     <div class="hero-bg">
-      <img src="httpsforplacehold.co/1600x900" onerror="this.src='https://placehold.co/1600x900/111/444?text=MOVIEROLL'">
+      <!-- FIXED: Corrected placeholder URL -->
+      <img src="bgimage.png" onerror="this.src='https://placehold.co/1600x900/111/444?text=MOVIEROLL'">
       <div class="gradient-overlay-t-b"></div>
       <div class="gradient-overlay-l-r"></div>
       <div class="gradient-overlay-bottom"></div>
     </div>
 
     <!-- Form Container -->
-    <div class="relative z-10 w-full max-w-lg bg-black/80 backdrop-blur-md rounded-xl shadow-2xl p-6 sm:p-10">
+    <!-- ANIMATION: Added 'form-container' class for load animation -->
+    <div class="form-container relative z-10 w-full max-w-lg bg-black/80 backdrop-blur-md rounded-xl shadow-2xl p-6 sm:p-10">
       <!-- Tabs -->
       <div class="flex mb-6 border-b border-gray-700">
         <button id="show-login-btn" class="flex-1 py-3 text-lg font-bold text-white border-b-4 border-red-600">Renew / Login</button>
@@ -78,7 +101,8 @@
             <label class="block text-sm mb-1">Password</label>
             <input id="password" type="password" class="form-input" placeholder="Enter password" required />
           </div>
-          <button id="login-submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-md transition-colors">Access & Watch</button>
+          <!-- ANIMATION: Added transition and active:scale -->
+          <button id="login-submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-md transition-all duration-150 active:scale-[.98]">Access & Watch</button>
         </form>
       </div>
 
@@ -98,7 +122,8 @@
             <label class="block text-sm mb-1">Email Address</label>
             <input id="apply-email" type="email" class="form-input" placeholder="your@email.com" required />
           </div>
-          <button id="apply-submit-btn" type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md transition-colors">Apply Now</button>
+          <!-- ANIMATION: Added transition and active:scale -->
+          <button id="apply-submit-btn" type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md transition-all duration-150 active:scale-[.98]">Apply Now</button>
         </form>
       </div>
       
@@ -106,7 +131,8 @@
       <div id="success-view" class="hidden text-center">
         <h2 class="text-3xl font-bold text-center mb-6 text-green-400">Access Granted!</h2>
         <p class="text-lg text-gray-300 mb-8">Your access is verified. You will be redirected to homepage in <span id="countdown">5</span> seconds.</p>
-        <button id="go-to-homepage-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md transition-colors">
+        <!-- ANIMATION: Added transition and active:scale -->
+        <button id="go-to-homepage-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md transition-all duration-150 active:scale-[.98]">
           Let's Go! Start Watching
         </button>
       </div>
@@ -128,10 +154,26 @@
 
     // --- Show Message Function ---
     function showMessage(type, text) {
+      // Base classes
       messageBox.className = 'p-4 mb-4 rounded-md text-sm text-white';
+      // Add color class
       messageBox.classList.add(type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600');
       messageBox.textContent = text;
+      
+      // ANIMATION: Add animation class
       messageBox.classList.remove('hidden');
+      messageBox.classList.add('animate-message');
+      
+      // Remove animation class after it finishes to allow re-triggering
+      messageBox.addEventListener('animationend', () => {
+          messageBox.classList.remove('animate-message');
+      }, { once: true }); // 'once: true' automatically removes the listener
+    }
+    
+    // --- Hide Message Function (used by tabs) ---
+    function hideMessage() {
+      messageBox.classList.add('hidden');
+      messageBox.classList.remove('animate-message');
     }
 
     // --- Auto Redirect Countdown ---
@@ -156,10 +198,14 @@
       applyView.classList.add('hidden');
       successView.classList.add('hidden');
       
+      // FIXED: Full tab style switching
       showLoginBtn.classList.add('text-white', 'border-red-600');
+      showLoginBtn.classList.remove('text-gray-500');
+      
       showApplyBtn.classList.remove('text-white', 'border-red-600');
       showApplyBtn.classList.add('text-gray-500');
-      messageBox.classList.add('hidden');
+      
+      hideMessage();
     };
 
     showApplyBtn.onclick = () => {
@@ -167,10 +213,14 @@
       loginView.classList.add('hidden');
       successView.classList.add('hidden');
       
+      // FIXED: Full tab style switching
       showApplyBtn.classList.add('text-white', 'border-red-600');
       showApplyBtn.classList.remove('text-gray-500');
+      
       showLoginBtn.classList.remove('text-white', 'border-red-600');
-      messageBox.classList.add('hidden');
+      showLoginBtn.classList.add('text-gray-500');
+      
+      hideMessage();
     };
 
     // --- Apply Form ---
@@ -182,7 +232,7 @@
       try {
         const res = await fetch(APPLY_SCRIPT_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
+          headers: { 'Content-Type': 'text/plain' }, // Keep as text/plain if your script expects it
           body: JSON.stringify({
             name: document.getElementById('apply-name').value,
             phone: document.getElementById('apply-phone').value,
@@ -208,6 +258,7 @@
       btn.disabled = true; btn.textContent = 'Verifying...';
       showMessage('info', 'Checking your details...');
 
+      // Clear any old session first
       try {
         localStorage.removeItem('movieroll_session');
       } catch (lsError) {
@@ -219,7 +270,7 @@
       try {
         const res = await fetch(LOGIN_SCRIPT_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
+          headers: { 'Content-Type': 'text/plain' }, // Keep as text/plain if your script expects it
           body: JSON.stringify({
             username: username,
             password: document.getElementById('password').value
@@ -235,6 +286,7 @@
         if (data.result === 'success') {
           showMessage('success', 'Success! Your access is confirmed.');
           
+          // Set a 30-day expiry for the session
           const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days
           try {
             localStorage.setItem('movieroll_session', JSON.stringify({ 
@@ -244,6 +296,8 @@
             }));
           } catch (lsError) {
             console.warn("Could not set localStorage:", lsError);
+            // Non-critical error, but good to know
+            showMessage('error', 'Login OK, but session could not be saved.');
           }
           
           // Hide login form and show success view
