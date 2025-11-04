@@ -1,331 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOVIEROLL - Subscription</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Font: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: #141414;
-            color: #ffffff;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
-        /* Background image styles */
-        .hero-bg {
-            position: absolute;
-            inset: 0;
-            z-index: -1;
-        }
-        .hero-bg img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        /* Gradient Overlays (Design match karne ke liye) */
-        .gradient-overlay-t-b {
-            position: absolute;
-            inset: 0;
-            background-image: linear-gradient(to top, #141414, rgba(20, 20, 20, 0.5), transparent);
-        }
-        .gradient-overlay-l-r {
-            position: absolute;
-            inset: 0;
-            background-image: linear-gradient(to right, rgba(0,0,0,0.6), transparent);
-        }
-        .gradient-overlay-bottom {
-             position: absolute;
-             bottom: 0;
-             left: 0;
-             right: 0;
-             height: 8rem; /* 32 */
-             background-image: linear-gradient(to top, #141414, transparent);
-        }
-
-        /* Custom input field style */
-        .form-input {
-            background-color: #333;
-            border: 1px solid #555;
-            border-radius: 0.375rem; /* rounded-md */
-            padding: 0.75rem 1rem; /* py-3 px-4 */
-            width: 100%;
-            color: #fff;
-            transition: border-color 0.2s;
-        }
-        .form-input::placeholder {
-            color: #999;
-        }
-        .form-input:focus {
-            outline: none;
-            border-color: #e50914; /* Red border on focus */
-            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.3);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MOVIEROLL - Subscription</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    body { background-color:#141414;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;}
+    .hero-bg{position:absolute;inset:0;z-index:-1;}
+    .hero-bg img{width:100%;height:100%;object-fit:cover;}
+    .gradient-overlay-t-b{position:absolute;inset:0;background:linear-gradient(to top,#141414,rgba(20,20,20,0.5),transparent);}
+    .gradient-overlay-l-r{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.6),transparent);}
+    .gradient-overlay-bottom{position:absolute;bottom:0;left:0;right:0;height:8rem;background:linear-gradient(to top,#141414,transparent);}
+    .form-input{background-color:#333;border:1px solid #555;border-radius:.375rem;padding:.75rem 1rem;width:100%;color:#fff;transition:.2s;}
+    .form-input:focus{outline:none;border-color:#e50914;box-shadow:0 0 0 2px rgba(229,9,20,.3);}
+    .form-input::placeholder{color:#999;}
+  </style>
 </head>
 <body class="antialiased">
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm shadow-lg p-4 sm:p-6">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-3xl font-extrabold text-red-600 tracking-wider">MOVIEROLL</h1>
+    </div>
+  </nav>
 
-    <!-- Header / Navbar (Aapke design se match karta hua) -->
-    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm shadow-lg p-4 sm:p-6">
-        <div class="container mx-auto">
-            <div class="flex justify-between items-center">
-                <!-- Logo -->
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-red-600 tracking-wider">MOVIEROLL</h1>
-            </div>
-        </div>
-    </nav>
+  <main class="relative min-h-screen flex items-center justify-center py-24 px-4 overflow-hidden">
+    <div class="hero-bg">
+      <img src="bgimage.png" onerror="this.src='https://placehold.co/1600x900/111/444?text=MOVIEROLL'">
+      <div class="gradient-overlay-t-b"></div>
+      <div class="gradient-overlay-l-r"></div>
+      <div class="gradient-overlay-bottom"></div>
+    </div>
 
-    <!-- Main Content Area -->
-    <main class="relative min-h-screen flex items-center justify-center py-24 px-4 overflow-hidden">
-        <!-- Background Image & Overlays -->
-        <div class="hero-bg">
-            <!-- Aap yahan 'bgimage.png' daal sakte hain -->
-            <img src="bgimage.png" 
-                 alt="Featured Movie Banner"
-                 onerror="this.src='https://placehold.co/1600x900/111/444?text=MOVIEROLL'">
-            <div class="gradient-overlay-t-b"></div>
-            <div class="gradient-overlay-l-r"></div>
-            <div class="gradient-overlay-bottom"></div>
-        </div>
+    <div class="relative z-10 w-full max-w-lg bg-black/80 backdrop-blur-md rounded-xl shadow-2xl p-6 sm:p-10">
+      <div class="flex mb-6 border-b border-gray-700">
+        <button id="show-login-btn" class="flex-1 py-3 text-lg font-bold text-white border-b-4 border-red-600">Renew / Login</button>
+        <button id="show-apply-btn" class="flex-1 py-3 text-lg font-bold text-gray-500 border-b-4 border-transparent hover:text-gray-300">Apply Now (₹10)</button>
+      </div>
 
-        <!-- Login/Apply Card -->
-        <div class="relative z-10 w-full max-w-lg bg-black/80 backdrop-blur-md rounded-xl shadow-2xl p-6 sm:p-10">
-            
-            <!-- View Toggle Buttons -->
-            <div class="flex mb-6 border-b border-gray-700">
-                <button id="show-login-btn" class="flex-1 py-3 text-lg font-bold text-white border-b-4 border-red-600">Renew / Login</button>
-                <button id="show-apply-btn" class="flex-1 py-3 text-lg font-bold text-gray-500 border-b-4 border-transparent hover:text-gray-300">Apply Now (₹10)</button>
-            </div>
+      <div id="message-box" class="hidden p-4 mb-4 rounded-md text-sm"></div>
 
-            <!-- Message Box (Error/Success ke liye) -->
-            <div id="message-box" class="hidden p-4 mb-4 rounded-md text-sm"></div>
+      <!-- LOGIN FORM -->
+      <div id="login-view">
+        <form id="login-form" class="space-y-5">
+          <h2 class="text-3xl font-bold text-center mb-6">Access Your Account</h2>
+          <div>
+            <label class="block text-sm mb-1">Username</label>
+            <input id="username" class="form-input" placeholder="Enter username" required />
+          </div>
+          <div>
+            <label class="block text-sm mb-1">Password</label>
+            <input id="password" type="password" class="form-input" placeholder="Enter password" required />
+          </div>
+          <button id="login-submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-md">Access & Watch</button>
+        </form>
+      </div>
 
-            <!-- === Login/Renew Form (View 1) === -->
-            <div id="login-view">
-                <form id="login-form" class="space-y-5">
-                    <h2 class="text-3xl font-bold text-center mb-6">Access Your Account</h2>
-                    <p class="text-center text-gray-400 -mt-4 mb-6 text-sm">Use the details we sent you on WhatsApp.</p>
-                    <div>
-                        <label for="username" class="block text-sm font-medium text-gray-300 mb-1">Username</label>
-                        <input type="text" id="username" class="form-input" placeholder="Enter your username" required>
-                    </div>
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
-                        <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
-                    </div>
-                    <button type="submit" id="login-submit-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-md transition-all duration-300 transform hover:scale-105">
-                        Access & Watch
-                    </button>
-                </form>
-            </div>
+      <!-- APPLY FORM -->
+      <div id="apply-view" class="hidden">
+        <form id="apply-form" class="space-y-5">
+          <h2 class="text-3xl font-bold text-center mb-2">Get Access for ₹10/Month</h2>
+          <div>
+            <label class="block text-sm mb-1">Full Name</label>
+            <input id="apply-name" class="form-input" placeholder="Your full name" required />
+          </div>
+          <div>
+            <label class="block text-sm mb-1">WhatsApp Number</label>
+            <input id="apply-phone" class="form-input" placeholder="10-digit number" required />
+          </div>
+          <div>
+            <label class="block text-sm mb-1">Email Address</label>
+            <input id="apply-email" type="email" class="form-input" placeholder="your@email.com" required />
+          </div>
+          <button id="apply-submit-btn" type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md">Apply Now</button>
+        </form>
+      </div>
+    </div>
+  </main>
 
-            <!-- === Apply Now Form (View 2) === -->
-            <div id="apply-view" class="hidden">
-                <form id="apply-form" class="space-y-5">
-                    <h2 class="text-3xl font-bold text-center mb-2">Get Access for ₹10/Month</h2>
-                    <p class="text-center text-gray-400 mb-6 text-sm">Fill this form. We will contact you on WhatsApp for payment.</p>
-                    <div>
-                        <label for="apply-name" class="block text-sm font-medium text-gray-300 mb-1">Full Name</label>
-                        <input type="text" id="apply-name" class="form-input" placeholder="Your full name" required>
-                    </div>
-                    <div>
-                        <label for="apply-phone" class="block text-sm font-medium text-gray-300 mb-1">WhatsApp Number</label>
-                        <input type="tel" id="apply-phone" class="form-input" placeholder="Your 10-digit number" required>
-                    </div>
-                    <div>
-                        <label for="apply-email" class="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
-                        <input type="email" id="apply-email" class="form-input" placeholder="your@email.com" required>
-                    </div>
-                    <button type="submit" id="apply-submit-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md transition-all duration-300 transform hover:scale-105">
-                        Apply Now
-                    </button>
-                </form>
-            </div>
+  <script>
+    const APPLY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl7G-K7CHvszrrmUeH1_kVjRLISXDpkhjwXkbIsqcZ4QI5PN5aKrQQBjeM6iMbdrRc/exec';
+    const LOGIN_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzZRcth46dUy1CDYc_j9e7u61df_8sHqhYnU8s110ZqgAePcclX8qLTPz4UKLedfuoc/exec';
 
-        </div>
-    </main>
+    const showLoginBtn = document.getElementById('show-login-btn');
+    const showApplyBtn = document.getElementById('show-apply-btn');
+    const loginView = document.getElementById('login-view');
+    const applyView = document.getElementById('apply-view');
+    const messageBox = document.getElementById('message-box');
 
-    <!-- Footer -->
-    <script>
-        // --- URLs for Google Apps Script ---
-        // INSTRUCTIONS: Yeh URLs aapko Google Apps Script deploy karne ke baad milengi.
-        // Unhe yahan paste karein.
-        const APPLY_SCRIPT_URL = 'PASTE_YOUR_APPLY_SCRIPT_URL_HERE';
-        const LOGIN_SCRIPT_URL = 'PASTE_YOUR_LOGIN_SCRIPT_URL_HERE';
+    function showMessage(type, text) {
+      messageBox.className = 'p-4 mb-4 rounded-md text-sm text-white';
+      messageBox.classList.add(type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600');
+      messageBox.textContent = text;
+    }
 
+    showLoginBtn.onclick = () => {
+      loginView.classList.remove('hidden'); applyView.classList.add('hidden');
+      showLoginBtn.classList.add('text-white', 'border-red-600'); showApplyBtn.classList.remove('text-white', 'border-red-600');
+      showApplyBtn.classList.add('text-gray-500'); messageBox.classList.add('hidden');
+    };
 
-        // --- DOM Elements ---
-        const showLoginBtn = document.getElementById('show-login-btn');
-        const showApplyBtn = document.getElementById('show-apply-btn');
-        const loginView = document.getElementById('login-view');
-        const applyView = document.getElementById('apply-view');
+    showApplyBtn.onclick = () => {
+      applyView.classList.remove('hidden'); loginView.classList.add('hidden');
+      showApplyBtn.classList.add('text-white', 'border-red-600'); showLoginBtn.classList.remove('text-white', 'border-red-600');
+      showLoginBtn.classList.add('text-gray-500'); messageBox.classList.add('hidden');
+    };
 
-        const loginForm = document.getElementById('login-form');
-        const applyForm = document.getElementById('apply-form');
-        
-        const loginSubmitBtn = document.getElementById('login-submit-btn');
-        const applySubmitBtn = document.getElementById('apply-submit-btn');
-        
-        const messageBox = document.getElementById('message-box');
-
-        // --- View Toggler (Taaki forms switch kar sakein) ---
-        showLoginBtn.addEventListener('click', () => {
-            loginView.classList.remove('hidden');
-            applyView.classList.add('hidden');
-            
-            showLoginBtn.classList.add('text-white', 'border-red-600');
-            showLoginBtn.classList.remove('text-gray-500', 'border-transparent');
-            
-            showApplyBtn.classList.add('text-gray-500', 'border-transparent');
-            showApplyBtn.classList.remove('text-white', 'border-red-600');
-            messageBox.classList.add('hidden');
+    // --- APPLY FORM ---
+    document.getElementById('apply-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('apply-submit-btn');
+      btn.disabled = true; btn.textContent = 'Submitting...';
+      showMessage('info', 'Sending your application...');
+      try {
+        const res = await fetch(APPLY_SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            name: document.getElementById('apply-name').value,
+            phone: document.getElementById('apply-phone').value,
+            email: document.getElementById('apply-email').value
+          })
         });
+        const data = await res.json();
+        if (data.result === 'success') {
+          showMessage('success', 'Success! We will contact you on WhatsApp soon.');
+          e.target.reset();
+        } else throw new Error(data.message);
+      } catch (err) {
+        showMessage('error', 'Error submitting form. Please try again.');
+      }
+      btn.disabled = false; btn.textContent = 'Apply Now';
+    });
 
-        showApplyBtn.addEventListener('click', () => {
-            loginView.classList.add('hidden');
-            applyView.classList.remove('hidden');
-
-            showApplyBtn.classList.add('text-white', 'border-red-600');
-            showApplyBtn.classList.remove('text-gray-500', 'border-transparent');
-
-            showLoginBtn.classList.add('text-gray-500', 'border-transparent');
-            showLoginBtn.classList.remove('text-white', 'border-red-600');
-            messageBox.classList.add('hidden');
+    // --- LOGIN FORM ---
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('login-submit-btn');
+      btn.disabled = true; btn.textContent = 'Verifying...';
+      showMessage('info', 'Checking your details...');
+      try {
+        const res = await fetch(LOGIN_SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            username: document.getElementById('username').value,
+            password: document.getElementById('password').value
+          })
         });
-
-        // --- Message Box Helper ---
-        function showMessage(type, text) {
-            messageBox.classList.remove('hidden', 'bg-green-600', 'bg-red-600', 'bg-blue-600', 'text-white');
-            
-            let bgColor = 'bg-blue-600'; // info
-            if (type === 'success') {
-                bgColor = 'bg-green-600';
-            } else if (type === 'error') {
-                bgColor = 'bg-red-600';
-            }
-            
-            messageBox.classList.add(bgColor, 'text-white');
-            messageBox.textContent = text;
-        }
-
-        // --- Apply Form Submission (Form 2) ---
-        applyForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            // --- Check for placeholder URL ---
-            if (APPLY_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyVdgPKVWPrZG4vP1FL4_gbyUvtDGX_Sy38Nkysxlo6Y1RReOlCB1KmMgdJ3VjDA8E9/exec' || APPLY_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbzfdf0iSwrNNyIYomUInGOAh2B-1_Qypto_6r0G9w3KUeXN4G_ERY6cw09oqLAM_CCy/exec') {
-                showMessage('error', 'Site admin ne backend setup nahi kiya hai.');
-                return;
-            }
-
-            const name = document.getElementById('apply-name').value;
-            const phone = document.getElementById('apply-phone').value;
-            const email = document.getElementById('apply-email').value;
-
-            applySubmitBtn.disabled = true;
-            applySubmitBtn.textContent = 'Submitting...';
-            showMessage('info', 'Sending your application...');
-
-            // --- FIX: Send data as JSON, not FormData ---
-            const requestData = {
-                name: name,
-                phone: phone,
-                email: email
-            };
-
-            fetch(APPLY_SCRIPT_URL, {
-                method: 'POST',
-                // body: formData, // OLD - This was sending FormData
-                body: JSON.stringify(requestData), // NEW - Send as JSON string
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.result === 'success') {
-                    showMessage('success', 'Success! We will contact you on WhatsApp soon.');
-                    applyForm.reset();
-                } else {
-                    throw new Error(data.message || 'Unknown error');
-                }
-            })
-            .catch(error => {
-                console.error('Apply Error:', error);
-                showMessage('error', 'Error submitting form. Please try again.');
-            })
-            .finally(() => {
-                applySubmitBtn.disabled = false;
-                applySubmitBtn.textContent = 'Apply Now';
-            });
-        });
-
-        // --- Login Form Submission (Form 1) ---
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            // --- Check for placeholder URL ---
-            if (LOGIN_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbzO0Z2wXSnbjEHtuXhR1LRBAsxS6Yp3LKXckU7O9o9DDIYXMx6Ebiuf8MFrFGzE8vtx/exec' || LOGIN_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbwoaXBeA1LlLN9OGI6dRGclftzQC7aJngFyec1xJ9c101ToMo8XS7xeApfZMePi0LTD/exec') {
-                showMessage('error', 'Site admin ne backend setup nahi kiya hai.');
-                return;
-            }
-
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            loginSubmitBtn.disabled = true;
-            loginSubmitBtn.textContent = 'Verifying...';
-            showMessage('info', 'Checking your details...');
-
-            // --- FIX: Send data as JSON, not FormData ---
-            const requestData = {
-                username: username,
-                password: password
-            };
-
-            fetch(LOGIN_SCRIPT_URL, {
-                method: 'POST',
-                // body: formData, // OLD - This was sending FormData
-                body: JSON.stringify(requestData), // NEW - Send as JSON string
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.result === 'success') {
-                    showMessage('success', 'Success! Redirecting you...');
-                    
-                    // --- 30 Day Access Logic ---
-                    const now = new Date();
-                    // 30 din ka expiry time (milliseconds mein)
-                    const expiryTime = now.getTime() + (30 * 24 * 60 * 60 * 1000); 
-                    
-                    const sessionData = {
-                        loggedIn: true,
-                        username: username,
-                        expiry: expiryTime
-                    };
-                    
-                    // User ka session data browser me save karo
-                    // Yahi session 30 din tak user ko logged in rakhega
-                    localStorage.setItem('movieroll_session', JSON.stringify(sessionData));
-                    
-                    // 1 second baad homepage par redirect karo
-                    setTimeout(() => {
-                        window.location.href = 'homepage.html'; // Yahan homepage ka naam daalein
-                    }, 1000);
-
-                } else {
-                    // Error backend se aaya (e.g., "Invalid Password" ya "Already Logged In")
-                    throw new Error(data.message || 'Invalid details');
-                }
-            })
-            .catch(error => {
-                console.error('Login Error:', error);
-                showMessage('error', error.message);
-                loginSubmitBtn.disabled = false;
-                loginSubmitBtn.textContent = 'Access & Watch';
-            });
-        });
-
-    </script>
+        const data = await res.json();
+        if (data.result === 'success') {
+          showMessage('success', 'Success! Redirecting...');
+          const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000;
+          localStorage.setItem('movieroll_session', JSON.stringify({ loggedIn: true, username: document.getElementById('username').value, expiry }));
+          setTimeout(() => location.href = 'homepage.html', 1000);
+        } else throw new Error(data.message);
+      } catch (err) {
+        showMessage('error', err.message);
+      }
+      btn.disabled = false; btn.textContent = 'Access & Watch';
+    });
+  </script>
 </body>
 </html>
