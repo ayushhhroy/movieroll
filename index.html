@@ -371,7 +371,10 @@
         if (data.result === 'success') {
           showMessage('success', 'Success! Your access is confirmed.');
           
-          const expiry = Date.Nnow() + 30 * 24 * 60 * 60 * 1000; // 30 days
+          // ******** FIX WAS HERE ********
+          // Changed Date.Nnow() to Date.now()
+          const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days 
+          
           try {
             localStorage.setItem('movieroll_session', JSON.stringify({ 
               loggedIn: true, 
