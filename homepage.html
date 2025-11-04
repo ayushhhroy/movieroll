@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOVIEROLL - Watch Movies Online</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Smooth scroll ke liye */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Netflix-style dark background */
+        body {
+            background-color: #141414;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            /* Hide scrollbar on load flicker */
+            overflow-x: hidden;
+        }
+        /* Custom scrollbar for horizontal rows */
+        .movie-row::-webkit-scrollbar {
+            height: 8px;
+        }
+        .movie-row::-webkit-scrollbar-thumb {
+            background-color: #444;
+            border-radius: 10px;
+        }
+        .movie-row::-webkit-scrollbar-track {
+            background-color: #1a1a1a;
+        }
+        
+        /* === ANIMATION STYLES === */
+        /* Page load animation ke liye initial state */
+        .animate-on-load {
+            opacity: 0;
+            transform: translateY(15px);
+            /* transition properties ko yahan define karein */
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        /* Animation ke baad 'loaded' state */
+        .loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header / Navbar -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-transparent transition-colors duration-300 ease-in-out p-4 sm:p-6">
+        <div class="container mx-auto">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-red-600 tracking-wider">MOVIEROLL</h1>
+                
+                <!-- Desktop Navigation Links -->
+                <div class="hidden md:flex space-x-6">
+                    <a href="#" class="font-extrabold text-white hover:text-gray-300 transition-colors">Home</a>
+                    <a href="#" class="font-extrabold text-white hover:text-gray-300 transition-colors">TV Shows</a>
+                    <a href="#" class="font-extrabold text-white hover:text-gray-300 transition-colors">Movies</a>
+                    <a href="#" class="font-extrabold text-white hover:text-gray-300 transition-colors">New & Popular</a>
+                </div>
+                
+                <!-- Mobile Menu Button (Hamburger Icon) -->
+                <div class="md:hidden">
+                    <button id="menu-toggle" class="text-white focus:outline-none">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu (Dropdown) -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 bg-black/80 backdrop-blur-sm rounded-lg p-4">
+                <a href="#" class="block text-white font-semibold py-2 px-3 hover:bg-gray-700 rounded transition-colors">Home</a>
+                <a href="#" class="block text-white font-semibold py-2 px-3 hover:bg-gray-700 rounded transition-colors">TV Shows</a>
+                <a href="#" class="block text-white font-semibold py-2 px-3 hover:bg-gray-700 rounded transition-colors">Movies</a>
+                <a href="#" class="block text-white font-semibold py-2 px-3 hover:bg-gray-700 rounded transition-colors">New & Popular</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative h-[70vh] md:h-[80vh] min-h-[500px] flex items-end justify-start text-white pb-28 md:pb-32 overflow-hidden">
+        <!-- Background Image -->
+        <div class="absolute inset-0">
+            <img src="bgimage.png" 
+                 alt="Featured Movie Banner" 
+                 class="w-full h-full object-cover"
+                 onerror="this.src='https://placehold.co/1600x900/111/444?text=MOVIEROLL'">
+            <!-- Gradient Overlay: Top-to-Bottom -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#141414] via-transparent/50 to-transparent"></div>
+            <!-- Gradient Overlay: Left-to-Right -->
+            <div class="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent"></div>
+            <!-- Gradient Overlay: Bottom Fade (to blend with body) -->
+            <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#141414] to-transparent"></div>
+        </div>
+        
+        <!-- Hero Content -->
+        <div class="relative z-20 container mx-auto px-4 sm:px-6 md:px-12 max-w-2xl">
+            <h2 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-2 animate-on-load">Movie of the Moment</h2>
+            <p class="text-base sm:text-lg mb-8 leading-relaxed animate-on-load" style="transition-delay: 200ms;">
+                Experience the best movie streaming—completely ad-free. Dive into non-stop entertainment with stunning visuals, powerful stories, and zero interruptions. Watch it now, only on Movieroll.
+            </p>
+            <div class="flex space-x-6 animate-on-load" style="transition-delay: 400ms;"> 
+                <a href="#movie-section" class="bg-white text-black px-6 sm:px-8 py-3 rounded-md text-lg font-bold flex items-center hover:bg-gray-200 transition-all duration-300 transform hover:scale-105">
+                    <svg xmlns="https://www.w3.org/2000/svg" class="h-6 w-6 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                    </svg>
+                    Play
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area - Movie Rows -->
+    <main id="movie-section" class="container mx-auto px-4 sm:px-6 md:px-12 pb-16 -mt-16 md:-mt-36 z-10 relative">
+        
+        <!-- Row 1: Trending Now -->
+        <section class="mb-12 animate-on-load" style="transition-delay: 600ms;">
+            <h2 class="text-2xl font-bold mb-3">Action Bollywood</h2>
+            <div class="relative">
+                <!-- UPDATE: `movie-row` class par event listeners add kiye jayenge JS se -->
+                <div class="movie-row flex overflow-x-auto overflow-y-hidden space-x-3 sm:space-x-4 p-2 -m-2">
+                    
+                    <!-- === MOVIE CARD (Size changed to w-36 sm:w-44 md:w-52) === -->
+                    <a href="animal.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                        <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <img src="animal-img.webp" alt="Animal" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Animal'">
+                        </div>
+                    </a>
+                    <!-- === END MOVIE CARD === -->
+
+                    <a href="pathaan.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <img src="pathan-img.webp" alt="Pathaan" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Pathaan'">
+                        </div>
+                    </a>
+                    
+                    <a href="BrahmastraPartOneShiva.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <img src="brahmastra-img.webp" alt="Brahmastra" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Brahmastra'">
+                        </div>
+                    </a>
+                    
+                    <a href="jawan.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <img src="Jawan-img.webp" alt="Jawan" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Jawan'">
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <img src="tiger3.webp" alt="Movie 5" class="w-full object-cover aspect-[2/3]">
+                        </div>
+                    </a>
+                    
+                    <a href="tigerzindahai.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <img src="tigerzindahai-img.webp" alt="Movie 5" class="w-full object-cover aspect-[2/3]">
+                        </div>
+                    </a>
+                    
+                    <a href="ekthatiger.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <img src="ekthatiger-img.webp" alt="Movie 5" class="w-full object-cover aspect-[2/3]">
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Row 2: Action & Adventure -->
+        <section class="mb-12 animate-on-load" style="transition-delay: 750ms;">
+            <h2 class="text-2xl font-bold mb-3">Love and Romantic</h2>
+            <div class="relative">
+                <div class="movie-row flex overflow-x-auto overflow-y-hidden space-x-3 sm:space-x-4 p-2 -m-2">
+                        
+                    <a href="kabirsingh.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <img src="kabirsign-img.webp" alt="Action 1" class="w-full object-cover aspect-[2/3]">
+                        </div>
+                    </a>
+                         
+                    <!-- Example of more cards (size updated) -->
+                    <a href="#" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <img src="https://placehold.co/400x600/222/555?text=Movie+B" alt="Movie B" class="w-full object-cover aspect-[2/3]">
+                        </div>
+                    </a>
+                    <a href="#" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <img src="https://placehold.co/400x600/222/555?text=Movie+C" alt="Movie C" class="w-full object-cover aspect-[2/3]">
+                        </div>
+                    </a>
+                    <a href="#" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <img src="https://placehold.co/400x600/222/555?text=Movie+D" alt="Movie D" class="w-full object-cover aspect-[2/3]">
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="container mx-auto px-4 sm:px-6 md:px-12 py-8 border-t border-gray-800">
+        <div class="text-center text-gray-500 text-sm">
+            Movieroll Exclusive Premiere
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu Toggle & Animations -->
+    <script>
+        // --- Mobile Menu Toggle ---
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.addEventListener('click', () => {
+            // 'hidden' class ko toggle (add/remove) karega
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- Navbar Scroll Effect ---
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                // Scroll karne par dark background add karo
+                navbar.classList.add('bg-black/90', 'backdrop-blur-sm', 'shadow-lg');
+                navbar.classList.remove('bg-transparent');
+            } else {
+                // Top par wapas transparent karo
+                navbar.classList.remove('bg-black/90', 'backdrop-blur-sm', 'shadow-lg');
+                navbar.classList.add('bg-transparent');
+            }
+        });
+
+        // --- Page Load Animations & Auto-Scroll Initializer ---
+        // 'load' event ka wait karega taaki images load ho jayein aur card ki width sahi mile
+        window.addEventListener('load', () => {
+            
+            // 1. Animations chalao
+            const elements = document.querySelectorAll('.animate-on-load');
+            elements.forEach((el) => {
+                el.classList.add('loaded');
+            });
+
+            // 2. Auto-Scroll logic setup karo
+            const rows = document.querySelectorAll('.movie-row');
+            
+            rows.forEach(row => {
+                // Har row ke liye shuru me auto-scroll start karo
+                startAutoScroll(row);
+
+                // Manual interaction ke liye event listeners add karo
+                // 'wheel' = mouse wheel, 'mousedown' = click & drag, 'touchstart' = touch screen
+                ['wheel', 'mousedown', 'touchstart'].forEach(eventType => {
+                    row.addEventListener(eventType, () => {
+                        handleManualInteraction(row);
+                    });
+                });
+            });
+        });
+
+
+        // --- Auto-Scroll Helper Functions ---
+
+        // Function: Ek row ko scroll karne ka logic
+        function autoScrollRow(row) {
+            const firstCard = row.querySelector('a');
+            if (!firstCard) return; // Row me card nahi hai
+
+            const cardWidth = firstCard.offsetWidth;
+            const gap = 16; // 1rem (sm:space-x-4 se)
+            const scrollAmount = cardWidth + gap;
+            const currentScroll = row.scrollLeft;
+            const maxScroll = row.scrollWidth - row.clientWidth;
+            let nextScroll = currentScroll + scrollAmount;
+
+            // Check karo ki scroll end tak pahunch gaya hai ya nahi
+            if (nextScroll > maxScroll + 1) { // 1px buffer
+                // Agar haan, toh wapas start me jao
+                row.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+                // Agar nahi, toh next position par jao
+                row.scrollTo({ left: nextScroll, behavior: 'smooth' });
+            }
+        }
+
+        // Function: Ek row ke liye auto-scroll interval start karna
+        function startAutoScroll(row) {
+            // Purana interval clear karo (agar hai toh)
+            if (row.autoScrollInterval) {
+                clearInterval(row.autoScrollInterval);
+            }
+            // Naya interval start karo
+            row.autoScrollInterval = setInterval(() => {
+                autoScrollRow(row);
+            }, 10000); // 10 seconds
+        }
+
+        // Function: Manual interaction (scroll/touch) ko handle karna
+        function handleManualInteraction(row) {
+            // 1. Current auto-scroll ko roko
+            if (row.autoScrollInterval) {
+                clearInterval(row.autoScrollInterval);
+            }
+
+            // 2. Purana inactivity timer clear karo (agar user lagatar scroll kar raha hai)
+            if (row.inactivityTimer) {
+                clearTimeout(row.inactivityTimer);
+            }
+
+            // 3. Naya timer start karo
+            // Jab user 15 second tak koi interaction nahi karega, tab auto-scroll resume hoga
+            row.inactivityTimer = setTimeout(() => {
+                startAutoScroll(row);
+            }, 5000); // 15 seconds ka delay
+        }
+    </script>
+
+</body>
+</html>
+
