@@ -54,7 +54,6 @@
 <body class="antialiased">
 
     <!-- Header / Navbar -->
-    <!-- UPDATE: `bg-gradient-to-b...` ko hata diya, `bg-transparent`, `transition-colors`, aur `id="navbar"` add kiya -->
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-transparent transition-colors duration-300 ease-in-out p-4 sm:p-6">
         <div class="container mx-auto">
             <div class="flex justify-between items-center">
@@ -106,7 +105,6 @@
         </div>
         
         <!-- Hero Content -->
-        <!-- UPDATE: Content elements par `animate-on-load` class aur style (delay ke liye) add kiya -->
         <div class="relative z-20 container mx-auto px-4 sm:px-6 md:px-12 max-w-2xl">
             <h2 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-2 animate-on-load">Movie of the Moment</h2>
             <p class="text-base sm:text-lg mb-8 leading-relaxed animate-on-load" style="transition-delay: 200ms;">
@@ -127,46 +125,56 @@
     <main id="movie-section" class="container mx-auto px-4 sm:px-6 md:px-12 pb-16 -mt-16 md:-mt-36 z-10 relative">
         
         <!-- Row 1: Trending Now -->
-        <!-- UPDATE: Section par `animate-on-load` class add kiya -->
         <section class="mb-12 animate-on-load" style="transition-delay: 600ms;">
             <h2 class="text-2xl font-bold mb-3">Action Bollywood</h2>
             <div class="relative">
                 <div class="movie-row flex overflow-x-auto overflow-y-hidden space-x-3 sm:space-x-4 p-2 -m-2">
                     
-                    <!-- === MOVIE CARD === -->
-                    <a href="animal.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
-                        <!-- UPDATE: `transition-all` add kiya gaya hai smooth brightness/scale ke liye -->
+                    <!-- === MOVIE CARD (UPDATE: Size changed to w-36 sm:w-44 md:w-52) === -->
+                    <a href="animal.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                             <img src="animal-img.webp" alt="Animal" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Animal'">
                         </div>
                     </a>
                     <!-- === END MOVIE CARD === -->
 
-                    
-                    
-                    <a href="pathaan.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
+                    <!-- UPDATE: Size changed -->
+                    <a href="pathaan.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                             <img src="pathan-img.webp" alt="Pathaan" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Pathaan'">
                         </div>
                     </a>
-                     
-                    <a href="BrahmastraPartOneShiva.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
+                    
+                    <!-- UPDATE: Size changed -->
+                    <a href="BrahmastraPartOneShiva.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                             <img src="brahmastra-img.webp" alt="Brahmastra" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Brahmastra'">
                         </div>
                     </a>
-                    <a href="jawan.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
+                    
+                    <!-- UPDATE: Size changed -->
+                    <a href="jawan.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                             <img src="Jawan-img.webp" alt="Jawan" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Jawan'">
                         </div>
                     </a>
-                    <!-- Placeholder card -->
-                    <a href="#" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
+                    
+                    <!-- UPDATE: Size changed -->
+                    <a href="#" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                             <img src="tiger3.webp" alt="Movie 5" class="w-full object-cover aspect-[2/3]">
                         </div>
                     </a>
-                    <a href="ekthatiger.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
+                    
+                    <!-- UPDATE: Size changed -->
+                    <a href="#" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <img src="tigerzindahai-img.webp" alt="Movie 5" class="w-full object-cover aspect-[2/3]">
+                        </div>
+                    </a>
+                    
+                    <!-- UPDATE: Size changed -->
+                    <a href="ekthatiger.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                             <img src="ekthatiger-img.webp" alt="Movie 5" class="w-full object-cover aspect-[2/3]">
                         </div>
@@ -176,19 +184,34 @@
         </section>
 
         <!-- Row 2: Action & Adventure -->
-        <!-- UPDATE: Section par `animate-on-load` class add kiya -->
         <section class="mb-12 animate-on-load" style="transition-delay: 750ms;">
             <h2 class="text-2xl font-bold mb-3">Love and Romantic</h2>
             <div class="relative">
                 <div class="movie-row flex overflow-x-auto overflow-y-hidden space-x-3 sm:space-x-4 p-2 -m-2">
-                     
-                    <a href="kabirsingh.html" class="flex-shrink-0 w-40 sm:w-48 md:w-60 group">
+                        
+                    <!-- UPDATE: Size changed -->
+                    <a href="kabirsingh.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                             <img src="kabirsign-img.webp" alt="Action 1" class="w-full object-cover aspect-[2/3]">
                         </div>
                     </a>
-                     
-
+                         
+                    <!-- Example of more cards (size updated) -->
+                    <a href="#" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <img src="https://placehold.co/400x600/222/555?text=Movie+B" alt="Movie B" class="w-full object-cover aspect-[2/3]">
+                        </div>
+                    </a>
+                    <a href="#" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <img src="https://placehold.co/400x600/222/555?text=Movie+C" alt="Movie C" class="w-full object-cover aspect-[2/3]">
+                        </div>
+                    </a>
+                    <a href="#" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                            <img src="https://placehold.co/400x600/222/555?text=Movie+D" alt="Movie D" class="w-full object-cover aspect-[2/3]">
+                        </div>
+                    </a>
 
                 </div>
             </div>
@@ -236,6 +259,39 @@
                 navbar.classList.add('bg-transparent');
             }
         });
+
+        // --- (NEW) Movie Row Auto-Scroll (Slideshow) ---
+        // Har 10 seconds me rows ko auto-scroll karega
+        setInterval(() => {
+            const rows = document.querySelectorAll('.movie-row');
+            
+            rows.forEach(row => {
+                const firstCard = row.querySelector('a');
+                if (!firstCard) return; // Row me card nahi hai
+
+                // Card ki width + gap (sm:space-x-4 = 1rem = 16px)
+                // Hum 16px ka gap assume kar rahe hain
+                const cardWidth = firstCard.offsetWidth;
+                const gap = 16; // 1rem
+                const scrollAmount = cardWidth + gap;
+
+                // Current scroll position
+                const currentScroll = row.scrollLeft;
+                const maxScroll = row.scrollWidth - row.clientWidth;
+
+                let nextScroll = currentScroll + scrollAmount;
+
+                // Check if the next scroll will go past the end
+                // We add a small buffer (1px) to handle rounding issues
+                if (nextScroll > maxScroll + 1) {
+                    // Agar end tak pahunch gaye, toh wapas start me jao
+                    row.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    // Warna next position par scroll karo
+                    row.scrollTo({ left: nextScroll, behavior: 'smooth' });
+                }
+            });
+        }, 5000); // 10,000ms = 10 seconds
     </script>
 
 </body>
