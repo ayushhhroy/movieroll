@@ -65,13 +65,14 @@
       <div id="apply-view" class="hidden">
         <form id="apply-form" class="space-y-5">
           <h2 class="text-3xl font-bold text-center mb-2">Get Access for ₹10/Month</h2>
+          <!-- ... (Apply form inputs) ... -->
           <div>
             <label class="block text-sm mb-1">Full Name</label>
             <input id="apply-name" class="form-input" placeholder="Your full name" required />
           </div>
           <div>
             <label class="block text-sm mb-1">WhatsApp Number</label>
-            <input id="apply-phone" class_name="form-input" placeholder="10-digit number" required />
+            <input id="apply-phone" class="form-input" placeholder="10-digit number" required />
           </div>
           <div>
             <label class="block text-sm mb-1">Email Address</label>
@@ -80,6 +81,17 @@
           <button id="apply-submit-btn" type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md transition-colors">Apply Now</button>
         </form>
       </div>
+      
+      <!-- ===== NEW SUCCESS VIEW ===== -->
+      <div id="success-view" class="hidden text-center">
+          <h2 class="text-3xl font-bold text-center mb-6 text-green-400">Access Granted!</h2>
+          <p class="text-lg text-gray-300 mb-8">Your access is verified. Click below to start watching.</p>
+          <button id="go-to-homepage-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md transition-colors">
+              Go to Homepage & Watch
+          </button>
+      </div>
+      <!-- ===== END OF NEW VIEW ===== -->
+      
     </div>
   </main>
 
@@ -87,12 +99,15 @@
 const APPLY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl7G-K7CHvszrrmUeH1_kVjRLISXDpkhjwXkbIsqcZ4QI5PN5aKrQQBjeM6iMbdrRc/exec';
 const LOGIN_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzYIOKAhco3lasc0F3sLraHgRWCvZPTS9za0Avd3wRdS1lnG_JQr3uaSioeSXZM-NGS/exec';
 
+// --- Element References ---
 const showLoginBtn = document.getElementById('show-login-btn');
 const showApplyBtn = document.getElementById('show-apply-btn');
 const loginView = document.getElementById('login-view');
 const applyView = document.getElementById('apply-view');
+const successView = document.getElementById('success-view'); // <-- Naya element
 const messageBox = document.getElementById('message-box');
 
+// --- Show Message Function ---
 function showMessage(type, text) {
   messageBox.className = 'p-4 mb-4 rounded-md text-sm text-white';
   messageBox.classList.add(type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600');
@@ -102,22 +117,28 @@ function showMessage(type, text) {
 
 // --- Tab Switching ---
 showLoginBtn.onclick = () => {
-  loginView.classList.remove('hidden'); applyView.classList.add('hidden');
+  loginView.classList.remove('hidden');
+  applyView.classList.add('hidden');
+  successView.classList.add('hidden'); // <-- Naya view hide karein
+  
   showLoginBtn.classList.add('text-white', 'border-red-600');
   showApplyBtn.classList.remove('text-white', 'border-red-600');
-  showApplyBtn.classList.add('text-gray-500'); // Ensure inactive tab is grey
+  showApplyBtn.classList.add('text-gray-500');
   messageBox.classList.add('hidden');
 };
 
 showApplyBtn.onclick = () => {
-  applyView.classList.remove('hidden'); loginView.classList.add('hidden');
+  applyView.classList.remove('hidden');
+  loginView.classList.add('hidden');
+  successView.classList.add('hidden'); // <-- Naya view hide karein
+  
   showApplyBtn.classList.add('text-white', 'border-red-600');
-  showApplyBtn.classList.remove('text-gray-500'); // Ensure active tab is white
+  showApplyBtn.classList.remove('text-gray-500');
   showLoginBtn.classList.remove('text-white', 'border-red-600');
   messageBox.classList.add('hidden');
 };
 
-// --- APPLY FORM ---
+// --- Apply Form (No change) ---
 document.getElementById('apply-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = document.getElementById('apply-submit-btn');
@@ -126,10 +147,7 @@ document.getElementById('apply-form').addEventListener('submit', async (e) => {
   try {
     const res = await fetch(APPLY_SCRIPT_URL, {
       method: 'POST',
-      // Note: Google Apps Script with simple 'exec' endpoint often expects form data,
-      // but if your script handles JSON, this is fine.
-      // Sending as text/plain to be safer with simple POST handlers.
-      headers: { 'Content-Type': 'text/plain' }, // Changed header
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({
         name: document.getElementById('apply-name').value,
         phone: document.getElementById('apply-phone').value,
@@ -148,14 +166,13 @@ document.getElementById('apply-form').addEventListener('submit', async (e) => {
   btn.disabled = false; btn.textContent = 'Apply Now';
 });
 
-// --- LOGIN FORM ---
+// --- Login Form (UPDATED LOGIC) ---
 document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = document.getElementById('login-submit-btn');
   btn.disabled = true; btn.textContent = 'Verifying...';
   showMessage('info', 'Checking your details...');
 
-  // clear old session before verifying
   try {
     localStorage.removeItem('movieroll_session');
   } catch (lsError) {
@@ -167,7 +184,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
   try {
     const res = await fetch(LOGIN_SCRIPT_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain' }, // Changed header
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({
         username: username,
         password: document.getElementById('password').value
@@ -180,8 +197,12 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 
     const data = await res.json();
     
+    // ===== YAHAN BADLA GAYA HAI =====
     if (data.result === 'success') {
-      showMessage('success', 'Success! Redirecting...');
+      // 1. Success message dikhayein
+      showMessage('success', 'Success! Your access is confirmed.');
+      
+      // 2. LocalStorage set karein
       const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days
       try {
         localStorage.setItem('movieroll_session', JSON.stringify({ loggedIn: true, username: username, expiry }));
@@ -189,25 +210,34 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
         console.warn("Could not set localStorage:", lsError);
       }
       
-      // --- THIS IS THE FIX ---
-      // Use window.top.location.href to redirect the main page,
-      // not just the iframe.
-      setTimeout(() => {
-        window.top.location.href = 'homepage.html';
-      }, 1000);
-      // ----------------------
-
+      // 3. Login form hide karein
+      loginView.classList.add('hidden');
+      
+      // 4. Naya "Success View" dikhayein
+      successView.classList.remove('hidden');
+      
+      // Ab redirect nahi karna hai, button ka intezar karna hai.
+      
     } else {
+      // Agar error hai (e.g., "Invalid password", "Subscription inactive")
       throw new Error(data.message || 'Invalid username or password');
     }
   } catch (err) {
+    // Sirf error hone par button ko re-enable karein
     showMessage('error', err.message);
     console.error('Login error:', err);
     btn.disabled = false;
     btn.textContent = 'Access & Watch';
   }
-  // Do not re-enable button on success, as we are redirecting
 });
+
+// --- Naye "Go to Homepage" button ke liye Event Listener ---
+document.getElementById('go-to-homepage-btn').addEventListener('click', () => {
+    // Ab redirect karein
+    window.top.location.href = 'homepage.html';
+});
+
 </script>
 </body>
 </html>
+
