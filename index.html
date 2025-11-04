@@ -26,19 +26,23 @@
   </nav>
 
   <main class="relative min-h-screen flex items-center justify-center py-24 px-4 overflow-hidden">
+    <!-- Background Image and Overlays -->
     <div class="hero-bg">
-      <img src="bgimage.png" onerror="this.src='https://placehold.co/1600x900/111/444?text=MOVIEROLL'">
+      <img src="httpsforplacehold.co/1600x900" onerror="this.src='https://placehold.co/1600x900/111/444?text=MOVIEROLL'">
       <div class="gradient-overlay-t-b"></div>
       <div class="gradient-overlay-l-r"></div>
       <div class="gradient-overlay-bottom"></div>
     </div>
 
+    <!-- Form Container -->
     <div class="relative z-10 w-full max-w-lg bg-black/80 backdrop-blur-md rounded-xl shadow-2xl p-6 sm:p-10">
+      <!-- Tabs -->
       <div class="flex mb-6 border-b border-gray-700">
         <button id="show-login-btn" class="flex-1 py-3 text-lg font-bold text-white border-b-4 border-red-600">Renew / Login</button>
         <button id="show-apply-btn" class="flex-1 py-3 text-lg font-bold text-gray-500 border-b-4 border-transparent hover:text-gray-300">Apply Now (₹10)</button>
       </div>
 
+      <!-- Message Box -->
       <div id="message-box" class="hidden p-4 mb-4 rounded-md text-sm"></div>
 
       <!-- LOGIN FORM -->
@@ -53,7 +57,7 @@
             <label class="block text-sm mb-1">Password</label>
             <input id="password" type="password" class="form-input" placeholder="Enter password" required />
           </div>
-          <button id="login-submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-md">Access & Watch</button>
+          <button id="login-submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-md transition-colors">Access & Watch</button>
         </form>
       </div>
 
@@ -67,13 +71,13 @@
           </div>
           <div>
             <label class="block text-sm mb-1">WhatsApp Number</label>
-            <input id="apply-phone" class="form-input" placeholder="10-digit number" required />
+            <input id="apply-phone" class_name="form-input" placeholder="10-digit number" required />
           </div>
           <div>
             <label class="block text-sm mb-1">Email Address</label>
             <input id="apply-email" type="email" class="form-input" placeholder="your@email.com" required />
           </div>
-          <button id="apply-submit-btn" type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md">Apply Now</button>
+          <button id="apply-submit-btn" type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md transition-colors">Apply Now</button>
         </form>
       </div>
     </div>
@@ -96,16 +100,19 @@ function showMessage(type, text) {
   messageBox.classList.remove('hidden');
 }
 
+// --- Tab Switching ---
 showLoginBtn.onclick = () => {
   loginView.classList.remove('hidden'); applyView.classList.add('hidden');
   showLoginBtn.classList.add('text-white', 'border-red-600');
   showApplyBtn.classList.remove('text-white', 'border-red-600');
+  showApplyBtn.classList.add('text-gray-500'); // Ensure inactive tab is grey
   messageBox.classList.add('hidden');
 };
 
 showApplyBtn.onclick = () => {
   applyView.classList.remove('hidden'); loginView.classList.add('hidden');
   showApplyBtn.classList.add('text-white', 'border-red-600');
+  showApplyBtn.classList.remove('text-gray-500'); // Ensure active tab is white
   showLoginBtn.classList.remove('text-white', 'border-red-600');
   messageBox.classList.add('hidden');
 };
@@ -119,6 +126,10 @@ document.getElementById('apply-form').addEventListener('submit', async (e) => {
   try {
     const res = await fetch(APPLY_SCRIPT_URL, {
       method: 'POST',
+      // Note: Google Apps Script with simple 'exec' endpoint often expects form data,
+      // but if your script handles JSON, this is fine.
+      // Sending as text/plain to be safer with simple POST handlers.
+      headers: { 'Content-Type': 'text/plain' }, // Changed header
       body: JSON.stringify({
         name: document.getElementById('apply-name').value,
         phone: document.getElementById('apply-phone').value,
@@ -129,9 +140,10 @@ document.getElementById('apply-form').addEventListener('submit', async (e) => {
     if (data.result === 'success') {
       showMessage('success', 'Success! We will contact you on WhatsApp soon.');
       e.target.reset();
-    } else throw new Error(data.message);
+    } else throw new Error(data.message || 'Unknown error');
   } catch (err) {
     showMessage('error', 'Error submitting form. Please try again.');
+    console.error('Apply error:', err);
   }
   btn.disabled = false; btn.textContent = 'Apply Now';
 });
@@ -144,30 +156,57 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
   showMessage('info', 'Checking your details...');
 
   // clear old session before verifying
-  localStorage.removeItem('movieroll_session');
+  try {
+    localStorage.removeItem('movieroll_session');
+  } catch (lsError) {
+    console.warn("Could not clear localStorage:", lsError);
+  }
+  
+  const username = document.getElementById('username').value;
 
   try {
     const res = await fetch(LOGIN_SCRIPT_URL, {
       method: 'POST',
+      headers: { 'Content-Type': 'text/plain' }, // Changed header
       body: JSON.stringify({
-        username: document.getElementById('username').value,
+        username: username,
         password: document.getElementById('password').value
       })
     });
+    
+    if (!res.ok) {
+        throw new Error(`Network response was not ok (status: ${res.status})`);
+    }
+
     const data = await res.json();
+    
     if (data.result === 'success') {
       showMessage('success', 'Success! Redirecting...');
-      const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000;
-      localStorage.setItem('movieroll_session', JSON.stringify({ loggedIn: true, username: document.getElementById('username').value, expiry }));
-      setTimeout(() => location.href = 'homepage.html', 1000);
+      const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days
+      try {
+        localStorage.setItem('movieroll_session', JSON.stringify({ loggedIn: true, username: username, expiry }));
+      } catch (lsError) {
+        console.warn("Could not set localStorage:", lsError);
+      }
+      
+      // --- THIS IS THE FIX ---
+      // Use window.top.location.href to redirect the main page,
+      // not just the iframe.
+      setTimeout(() => {
+        window.top.location.href = 'homepage.html';
+      }, 1000);
+      // ----------------------
+
     } else {
-      throw new Error(data.message);
+      throw new Error(data.message || 'Invalid username or password');
     }
   } catch (err) {
     showMessage('error', err.message);
+    console.error('Login error:', err);
+    btn.disabled = false;
+    btn.textContent = 'Access & Watch';
   }
-
-  btn.disabled = false; btn.textContent = 'Access & Watch';
+  // Do not re-enable button on success, as we are redirecting
 });
 </script>
 </body>
