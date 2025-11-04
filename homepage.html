@@ -49,9 +49,28 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* === PRELOADER STYLES === */
+        /* Preloader Fade-out State */
+        .preloader-hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
     </style>
 </head>
 <body class="antialiased">
+
+    <!-- Preloader -->
+    <div id="preloader" class="fixed inset-0 bg-[#141414] z-[9999] flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
+        <!-- Pulsing Logo -->
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-red-600 tracking-wider animate-pulse">MOVIEROLL</h1>
+        
+        <!-- Long Loading Notification (Initially Hidden) -->
+        <div id="loading-notification" class="hidden mt-8 text-center text-gray-400 text-sm max-w-xs px-4">
+            <p>If you are opening this app for the first time, it might take a moment. Please do not close the app.</p>
+        </div>
+    </div>
+    <!-- End Preloader -->
 
     <!-- Header / Navbar -->
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-transparent transition-colors duration-300 ease-in-out p-4 sm:p-6">
@@ -189,7 +208,7 @@
                             <img src="kabirsign-img.webp" alt="Action 1" class="w-full object-cover aspect-[2/3]">
                         </div>
                     </a>
-                         
+                            
                     <!-- Example of more cards (size updated) -->
                     <a href="#" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
@@ -245,9 +264,37 @@
             }
         });
 
+        // --- Preloader & Long Load Notification ---
+        // Timer for long loading notification
+        const loadingTimer = setTimeout(() => {
+            const notification = document.getElementById('loading-notification');
+            if (notification) {
+                // Use 'hidden' class from Tailwind
+                notification.classList.remove('hidden');
+            }
+        }, 5000); // 5 seconds
+
+
         // --- Page Load Animations & Auto-Scroll Initializer ---
         // 'load' event ka wait karega taaki images load ho jayein aur card ki width sahi mile
         window.addEventListener('load', () => {
+            
+            // === NEW PRELOADER LOGIC ===
+            // 1. Stop the long loading timer (since page has loaded)
+            clearTimeout(loadingTimer);
+
+            // 2. Hide the preloader
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                // Add class to trigger fade-out animation
+                preloader.classList.add('preloader-hidden');
+                
+                // Optional: Remove from DOM after animation finishes
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 600); // Must be > transition duration (500ms)
+            }
+            // === END NEW PRELOADER LOGIC ===
             
             // 1. Animations chalao
             const elements = document.querySelectorAll('.animate-on-load');
@@ -325,10 +372,9 @@
             // Jab user 15 second tak koi interaction nahi karega, tab auto-scroll resume hoga
             row.inactivityTimer = setTimeout(() => {
                 startAutoScroll(row);
-            }, 5000); // 15 seconds ka delay
+            }, 5000); // 5 seconds ka delay (changed from 15 to 5 for faster resume)
         }
     </script>
 
 </body>
 </html>
-
