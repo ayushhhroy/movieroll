@@ -8,7 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
   <style>
     body { background-color:#141414;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;}
-    /* ... (baaki CSS same hai) ... */
     .hero-bg{position:absolute;inset:0;z-index:-1;}
     .hero-bg img{width:100%;height:100%;object-fit:cover;}
     .gradient-overlay-t-b{position:absolute;inset:0;background:linear-gradient(to top,#141414,rgba(20,20,20,0.5),transparent);}
@@ -21,26 +20,21 @@
 </head>
 <body class="antialiased">
 
-  <!-- ===== NAYA SESSION CHECK SCRIPT ===== -->
+  <!-- ===== SESSION CHECK SCRIPT ===== -->
   <script>
     (function() {
       try {
         const session = localStorage.getItem('movieroll_session');
         if (session) {
           const data = JSON.parse(session);
-          // Check karein ki session valid hai AUR expiry time future mein hai
           if (data.loggedIn === true && data.expiry && data.expiry > Date.now()) {
-            // Agar valid hai, toh seedha homepage par bhej do
-            // Login page dikhane ki zaroorat nahi hai
             window.top.location.href = 'homepage.html';
           } else {
-            // Agar session hai par expired hai, toh use remove kar do
             localStorage.removeItem('movieroll_session');
           }
         }
       } catch (e) {
         console.error('Session check failed:', e);
-        // Koi error ho toh bhi login page dikhao
       }
     })();
   </script>
@@ -110,14 +104,15 @@
         </form>
       </div>
       
-      <!-- SUCCESS VIEW -->
+      <!-- ===== SUCCESS VIEW (BUTTON TEXT CHANGED) ===== -->
       <div id="success-view" class="hidden text-center">
           <h2 class="text-3xl font-bold text-center mb-6 text-green-400">Access Granted!</h2>
           <p class="text-lg text-gray-300 mb-8">Your access is verified. Click below to start watching.</p>
           <button id="go-to-homepage-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md transition-colors">
-              Go to Homepage & Watch
+              Let's Go!
           </button>
       </div>
+      <!-- ===== END OF SUCCESS VIEW ===== -->
       
     </div>
   </main>
