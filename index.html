@@ -14,7 +14,7 @@
     .gradient-overlay-l-r{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.6),transparent);}
     .gradient-overlay-bottom{position:absolute;bottom:0;left:0;right:0;height:8rem;background:linear-gradient(to top,#141414,transparent);}
     
-    /* --- UPDATED: Form Input Styles --- */
+    /* --- Form Input Styles --- */
     .form-input {
       background-color: #333;
       border: 1px solid #555;
@@ -75,7 +75,7 @@
   </script>
   <!-- ===== END OF SESSION CHECK SCRIPT ===== -->
 
-  <!-- UPDATED: Navbar with larger logo and padding -->
+  <!-- Navbar with larger logo and padding -->
   <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm shadow-lg p-5 sm:p-7">
     <div class="container mx-auto flex justify-between items-center">
       <h1 class="text-4xl font-extrabold text-red-600 tracking-wider">MOVIEROLL</h1>
@@ -92,25 +92,26 @@
     </div>
 
     <!-- Form Container -->
-    <!-- UPDATED: Larger container, padding, and border-radius -->
+    <!-- Larger container, padding, and border-radius -->
     <div class="form-container relative z-10 w-full max-w-xl bg-black/80 backdrop-blur-md rounded-2xl shadow-2xl p-8 sm:p-12">
-      <!-- Tabs -->
-      <!-- UPDATED: Tab styles for active/inactive -->
+      <!-- 
+        UPDATED TABS: 
+        - "Sign Up" is now the default.
+        - "Sign In" is the secondary option.
+      -->
       <div class="flex mb-8 border-b border-gray-700">
-        <button id="show-login-btn" class="flex-1 py-3 text-lg font-bold text-white border-b-4 border-red-600">Renew / Login</button>
-        <button id="show-apply-btn" class="flex-1 py-3 text-lg font-medium text-gray-400 border-b-4 border-transparent hover:text-white transition-colors">Apply (₹10/mo)</button>
+        <button id="show-apply-btn" class="flex-1 py-3 text-lg font-bold text-white border-b-4 border-red-600">Sign Up (₹10/mo)</button>
+        <button id="show-login-btn" class="flex-1 py-3 text-lg font-medium text-gray-400 border-b-4 border-transparent hover:text-white transition-colors">Sign In</button>
       </div>
 
       <!-- Message Box -->
       <div id="message-box" class="hidden p-4 mb-4 rounded-md text-sm"></div>
 
-      <!-- LOGIN FORM -->
-      <div id="login-view">
+      <!-- LOGIN FORM (Now hidden by default) -->
+      <div id="login-view" class="hidden">
         <form id="login-form" class="space-y-6">
-          <!-- UPDATED: Larger heading and margin -->
-          <h2 class="text-4xl font-bold text-center mb-8">Access Your Account</h2>
+          <h2 class="text-4xl font-bold text-center mb-8">Sign In to Your Account</h2>
           <div>
-            <!-- UPDATED: Label styling -->
             <label class="block text-sm mb-2 font-medium text-gray-300">Username</label>
             <input id="username" class="form-input" placeholder="Enter username" required />
           </div>
@@ -118,16 +119,14 @@
             <label class="block text-sm mb-2 font-medium text-gray-300">Password</label>
             <input id="password" type="password" class="form-input" placeholder="Enter password" required />
           </div>
-          <!-- UPDATED: Larger button -->
-          <button id="login-submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white text-lg font-bold py-4 px-4 rounded-md transition-all duration-150 active:scale-[.98]">Access & Watch</button>
+          <button id="login-submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white text-lg font-bold py-4 px-4 rounded-md transition-all duration-150 active:scale-[.98]">Sign In & Watch</button>
         </form>
       </div>
 
-      <!-- APPLY FORM -->
-      <div id="apply-view" class="hidden">
+      <!-- APPLY FORM (Now visible by default) -->
+      <div id="apply-view">
         <form id="apply-form" class="space-y-6">
-          <!-- UPDATED: Larger heading and margin -->
-          <h2 class="text-4xl font-bold text-center mb-8">Get Access for ₹10/Month</h2>
+          <h2 class="text-4xl font-bold text-center mb-8">Sign Up for Access (₹10/Month)</h2>
           <div>
             <label class="block text-sm mb-2 font-medium text-gray-300">Full Name</label>
             <input id="apply-name" class="form-input" placeholder="Your full name" required />
@@ -140,17 +139,15 @@
             <label class="block text-sm mb-2 font-medium text-gray-300">Email Address</label>
             <input id="apply-email" type="email" class="form-input" placeholder="your@email.com" required />
           </div>
-          <!-- UPDATED: Larger button and changed to red -->
-          <button id="apply-submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white text-lg font-bold py-4 px-4 rounded-md transition-all duration-150 active:scale-[.98]">Apply Now</tton>
+          <!-- Fixed typo </tton> -> </button> -->
+          <button id="apply-submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white text-lg font-bold py-4 px-4 rounded-md transition-all duration-150 active:scale-[.98]">Sign Up & Apply</button>
         </form>
       </div>
       
       <!-- SUCCESS VIEW -->
       <div id="success-view" class="hidden text-center">
-        <!-- UPDATED: Larger heading -->
         <h2 class="text-4xl font-bold text-center mb-6 text-green-400">Access Granted!</h2>
         <p class="text-lg text-gray-300 mb-8">Your access is verified. You will be redirected to homepage in <span id="countdown">5</span> seconds.</p>
-        <!-- UPDATED: Larger button -->
         <button id="go-to-homepage-btn" class="w-full bg-green-600 hover:bg-green-700 text-white text-lg font-bold py-4 px-4 rounded-md transition-all duration-150 active:scale-[.98]">
           Let's Go! Start Watching
         </button>
@@ -217,11 +214,11 @@
       applyView.classList.add('hidden');
       successView.classList.add('hidden');
       
-      // Style active tab
+      // Style active tab (Sign In)
       showLoginBtn.classList.add('text-white', 'font-bold', 'border-red-600');
       showLoginBtn.classList.remove('text-gray-400', 'font-medium', 'border-transparent');
       
-      // Style inactive tab
+      // Style inactive tab (Sign Up)
       showApplyBtn.classList.add('text-gray-400', 'font-medium', 'border-transparent');
       showApplyBtn.classList.remove('text-white', 'font-bold', 'border-red-600');
       
@@ -233,11 +230,11 @@
       loginView.classList.add('hidden');
       successView.classList.add('hidden');
       
-      // Style active tab
+      // Style active tab (Sign Up)
       showApplyBtn.classList.add('text-white', 'font-bold', 'border-red-600');
       showApplyBtn.classList.remove('text-gray-400', 'font-medium', 'border-transparent');
 
-      // Style inactive tab
+      // Style inactive tab (Sign In)
       showLoginBtn.classList.add('text-gray-400', 'font-medium', 'border-transparent');
       showLoginBtn.classList.remove('text-white', 'font-bold', 'border-red-600');
       
@@ -269,7 +266,7 @@
         showMessage('error', 'Error submitting form. Please try again.');
         console.error('Apply error:', err);
       }
-      btn.disabled = false; btn.textContent = 'Apply Now';
+      btn.disabled = false; btn.textContent = 'Sign Up & Apply';
     });
 
     // --- Login Form ---
@@ -336,7 +333,7 @@
         showMessage('error', err.message);
         console.error('Login error:', err);
         btn.disabled = false;
-        btn.textContent = 'Access & Watch';
+        btn.textContent = 'Sign In & Watch';
       }
     });
 
@@ -348,4 +345,3 @@
   </script>
 </body>
 </html>
-
