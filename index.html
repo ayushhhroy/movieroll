@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
   <style>
     body { background-color:#141414;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;}
+    /* ... (baaki CSS same hai) ... */
     .hero-bg{position:absolute;inset:0;z-index:-1;}
     .hero-bg img{width:100%;height:100%;object-fit:cover;}
     .gradient-overlay-t-b{position:absolute;inset:0;background:linear-gradient(to top,#141414,rgba(20,20,20,0.5),transparent);}
@@ -19,6 +20,33 @@
   </style>
 </head>
 <body class="antialiased">
+
+  <!-- ===== NAYA SESSION CHECK SCRIPT ===== -->
+  <script>
+    (function() {
+      try {
+        const session = localStorage.getItem('movieroll_session');
+        if (session) {
+          const data = JSON.parse(session);
+          // Check karein ki session valid hai AUR expiry time future mein hai
+          if (data.loggedIn === true && data.expiry && data.expiry > Date.now()) {
+            // Agar valid hai, toh seedha homepage par bhej do
+            // Login page dikhane ki zaroorat nahi hai
+            window.top.location.href = 'homepage.html';
+          } else {
+            // Agar session hai par expired hai, toh use remove kar do
+            localStorage.removeItem('movieroll_session');
+          }
+        }
+      } catch (e) {
+        console.error('Session check failed:', e);
+        // Koi error ho toh bhi login page dikhao
+      }
+    })();
+  </script>
+  <!-- ===== END OF SESSION CHECK SCRIPT ===== -->
+
+
   <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm shadow-lg p-4 sm:p-6">
     <div class="container mx-auto flex justify-between items-center">
       <h1 class="text-3xl font-extrabold text-red-600 tracking-wider">MOVIEROLL</h1>
@@ -82,7 +110,7 @@
         </form>
       </div>
       
-      <!-- ===== NEW SUCCESS VIEW ===== -->
+      <!-- SUCCESS VIEW -->
       <div id="success-view" class="hidden text-center">
           <h2 class="text-3xl font-bold text-center mb-6 text-green-400">Access Granted!</h2>
           <p class="text-lg text-gray-300 mb-8">Your access is verified. Click below to start watching.</p>
@@ -90,154 +118,143 @@
               Go to Homepage & Watch
           </button>
       </div>
-      <!-- ===== END OF NEW VIEW ===== -->
       
     </div>
   </main>
 
+  <!-- Baaki ka JavaScript (Event Listeners) -->
   <script>
-const APPLY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl7G-K7CHvszrrmUeH1_kVjRLISXDpkhjwXkbIsqcZ4QI5PN5aKrQQBjeM6iMbdrRc/exec';
-const LOGIN_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzYIOKAhco3lasc0F3sLraHgRWCvZPTS9za0Avd3wRdS1lnG_JQr3uaSioeSXZM-NGS/exec';
+    const APPLY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl7G-K7CHvszrrmUeH1_kVjRLISXDpkhjwXkbIsqcZ4QI5PN5aKrQQBjeM6iMbdrRc/exec';
+    const LOGIN_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzYIOKAhco3lasc0F3sLraHgRWCvZPTS9za0Avd3wRdS1lnG_JQr3uaSioeSXZM-NGS/exec';
 
-// --- Element References ---
-const showLoginBtn = document.getElementById('show-login-btn');
-const showApplyBtn = document.getElementById('show-apply-btn');
-const loginView = document.getElementById('login-view');
-const applyView = document.getElementById('apply-view');
-const successView = document.getElementById('success-view'); // <-- Naya element
-const messageBox = document.getElementById('message-box');
+    // --- Element References ---
+    const showLoginBtn = document.getElementById('show-login-btn');
+    const showApplyBtn = document.getElementById('show-apply-btn');
+    const loginView = document.getElementById('login-view');
+    const applyView = document.getElementById('apply-view');
+    const successView = document.getElementById('success-view'); 
+    const messageBox = document.getElementById('message-box');
 
-// --- Show Message Function ---
-function showMessage(type, text) {
-  messageBox.className = 'p-4 mb-4 rounded-md text-sm text-white';
-  messageBox.classList.add(type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600');
-  messageBox.textContent = text;
-  messageBox.classList.remove('hidden');
-}
-
-// --- Tab Switching ---
-showLoginBtn.onclick = () => {
-  loginView.classList.remove('hidden');
-  applyView.classList.add('hidden');
-  successView.classList.add('hidden'); // <-- Naya view hide karein
-  
-  showLoginBtn.classList.add('text-white', 'border-red-600');
-  showApplyBtn.classList.remove('text-white', 'border-red-600');
-  showApplyBtn.classList.add('text-gray-500');
-  messageBox.classList.add('hidden');
-};
-
-showApplyBtn.onclick = () => {
-  applyView.classList.remove('hidden');
-  loginView.classList.add('hidden');
-  successView.classList.add('hidden'); // <-- Naya view hide karein
-  
-  showApplyBtn.classList.add('text-white', 'border-red-600');
-  showApplyBtn.classList.remove('text-gray-500');
-  showLoginBtn.classList.remove('text-white', 'border-red-600');
-  messageBox.classList.add('hidden');
-};
-
-// --- Apply Form (No change) ---
-document.getElementById('apply-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const btn = document.getElementById('apply-submit-btn');
-  btn.disabled = true; btn.textContent = 'Submitting...';
-  showMessage('info', 'Sending your application...');
-  try {
-    const res = await fetch(APPLY_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({
-        name: document.getElementById('apply-name').value,
-        phone: document.getElementById('apply-phone').value,
-        email: document.getElementById('apply-email').value
-      })
-    });
-    const data = await res.json();
-    if (data.result === 'success') {
-      showMessage('success', 'Success! We will contact you on WhatsApp soon.');
-      e.target.reset();
-    } else throw new Error(data.message || 'Unknown error');
-  } catch (err) {
-    showMessage('error', 'Error submitting form. Please try again.');
-    console.error('Apply error:', err);
-  }
-  btn.disabled = false; btn.textContent = 'Apply Now';
-});
-
-// --- Login Form (UPDATED LOGIC) ---
-document.getElementById('login-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const btn = document.getElementById('login-submit-btn');
-  btn.disabled = true; btn.textContent = 'Verifying...';
-  showMessage('info', 'Checking your details...');
-
-  try {
-    localStorage.removeItem('movieroll_session');
-  } catch (lsError) {
-    console.warn("Could not clear localStorage:", lsError);
-  }
-  
-  const username = document.getElementById('username').value;
-
-  try {
-    const res = await fetch(LOGIN_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({
-        username: username,
-        password: document.getElementById('password').value
-      })
-    });
-    
-    if (!res.ok) {
-        throw new Error(`Network response was not ok (status: ${res.status})`);
+    // --- Show Message Function ---
+    function showMessage(type, text) {
+      messageBox.className = 'p-4 mb-4 rounded-md text-sm text-white';
+      messageBox.classList.add(type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600');
+      messageBox.textContent = text;
+      messageBox.classList.remove('hidden');
     }
 
-    const data = await res.json();
-    
-    // ===== YAHAN BADLA GAYA HAI =====
-    if (data.result === 'success') {
-      // 1. Success message dikhayein
-      showMessage('success', 'Success! Your access is confirmed.');
+    // --- Tab Switching ---
+    showLoginBtn.onclick = () => {
+      loginView.classList.remove('hidden');
+      applyView.classList.add('hidden');
+      successView.classList.add('hidden');
       
-      // 2. LocalStorage set karein
-      const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days
+      showLoginBtn.classList.add('text-white', 'border-red-600');
+      showApplyBtn.classList.remove('text-white', 'border-red-600');
+      showApplyBtn.classList.add('text-gray-500');
+      messageBox.classList.add('hidden');
+    };
+
+    showApplyBtn.onclick = () => {
+      applyView.classList.remove('hidden');
+      loginView.classList.add('hidden');
+      successView.classList.add('hidden');
+      
+      showApplyBtn.classList.add('text-white', 'border-red-600');
+      showApplyBtn.classList.remove('text-gray-500');
+      showLoginBtn.classList.remove('text-white', 'border-red-600');
+      messageBox.classList.add('hidden');
+    };
+
+    // --- Apply Form ---
+    document.getElementById('apply-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('apply-submit-btn');
+      btn.disabled = true; btn.textContent = 'Submitting...';
+      showMessage('info', 'Sending your application...');
       try {
-        localStorage.setItem('movieroll_session', JSON.stringify({ loggedIn: true, username: username, expiry }));
+        const res = await fetch(APPLY_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({
+            name: document.getElementById('apply-name').value,
+            phone: document.getElementById('apply-phone').value,
+            email: document.getElementById('apply-email').value
+          })
+        });
+        const data = await res.json();
+        if (data.result === 'success') {
+          showMessage('success', 'Success! We will contact you on WhatsApp soon.');
+          e.target.reset();
+        } else throw new Error(data.message || 'Unknown error');
+      } catch (err) {
+        showMessage('error', 'Error submitting form. Please try again.');
+        console.error('Apply error:', err);
+      }
+      btn.disabled = false; btn.textContent = 'Apply Now';
+    });
+
+    // --- Login Form ---
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('login-submit-btn');
+      btn.disabled = true; btn.textContent = 'Verifying...';
+      showMessage('info', 'Checking your details...');
+
+      try {
+        localStorage.removeItem('movieroll_session');
       } catch (lsError) {
-        console.warn("Could not set localStorage:", lsError);
+        console.warn("Could not clear localStorage:", lsError);
       }
       
-      // 3. Login form hide karein
-      loginView.classList.add('hidden');
-      
-      // 4. Naya "Success View" dikhayein
-      successView.classList.remove('hidden');
-      
-      // Ab redirect nahi karna hai, button ka intezar karna hai.
-      
-    } else {
-      // Agar error hai (e.g., "Invalid password", "Subscription inactive")
-      throw new Error(data.message || 'Invalid username or password');
-    }
-  } catch (err) {
-    // Sirf error hone par button ko re-enable karein
-    showMessage('error', err.message);
-    console.error('Login error:', err);
-    btn.disabled = false;
-    btn.textContent = 'Access & Watch';
-  }
-});
+      const username = document.getElementById('username').value;
 
-// --- Naye "Go to Homepage" button ke liye Event Listener ---
-document.getElementById('go-to-homepage-btn').addEventListener('click', () => {
-    // Ab redirect karein
-    window.top.location.href = 'homepage.html';
-});
+      try {
+        const res = await fetch(LOGIN_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({
+            username: username,
+            password: document.getElementById('password').value
+          })
+        });
+        
+        if (!res.ok) {
+            throw new Error(`Network response was not ok (status: ${res.status})`);
+        }
 
-</script>
+        const data = await res.json();
+        
+        if (data.result === 'success') {
+          showMessage('success', 'Success! Your access is confirmed.');
+          
+          const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days
+          try {
+            localStorage.setItem('movieroll_session', JSON.stringify({ loggedIn: true, username: username, expiry }));
+          } catch (lsError) {
+            console.warn("Could not set localStorage:", lsError);
+          }
+          
+          loginView.classList.add('hidden');
+          successView.classList.remove('hidden');
+          
+        } else {
+          throw new Error(data.message || 'Invalid username or password');
+        }
+      } catch (err) {
+        showMessage('error', err.message);
+        console.error('Login error:', err);
+        btn.disabled = false;
+        btn.textContent = 'Access & Watch';
+      }
+    });
+
+    // --- "Go to Homepage" button ---
+    document.getElementById('go-to-homepage-btn').addEventListener('click', () => {
+        window.top.location.href = 'homepage.html';
+    });
+
+  </script>
 </body>
 </html>
 
