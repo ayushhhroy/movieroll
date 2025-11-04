@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MOVIEROLL - Subscription</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
   <style>
     body { background-color:#141414;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;}
     .hero-bg{position:absolute;inset:0;z-index:-1;}
@@ -13,9 +13,23 @@
     .gradient-overlay-t-b{position:absolute;inset:0;background:linear-gradient(to top,#141414,rgba(20,20,20,0.5),transparent);}
     .gradient-overlay-l-r{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.6),transparent);}
     .gradient-overlay-bottom{position:absolute;bottom:0;left:0;right:0;height:8rem;background:linear-gradient(to top,#141414,transparent);}
-    .form-input{background-color:#333;border:1px solid #555;border-radius:.375rem;padding:.75rem 1rem;width:100%;color:#fff;transition:.2s;}
-    .form-input:focus{outline:none;border-color:#e50914;box-shadow:0 0 0 2px rgba(229,9,20,.3);}
-    .form-input::placeholder{color:#999;}
+    
+    /* --- UPDATED: Form Input Styles --- */
+    .form-input {
+      background-color: #333;
+      border: 1px solid #555;
+      border-radius: .375rem;
+      padding: 1rem; /* Increased padding */
+      width: 100%;
+      color: #fff;
+      transition: all 0.2s ease-in-out;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: #333; /* Hide border on focus */
+      box-shadow: 0 0 0 3px #e50914; /* Use ring/shadow instead */
+    }
+    .form-input::placeholder { color: #888; } /* Lighter placeholder */
 
     /* --- Animation: Page Load Fade-in --- */
     @keyframes fadeInUp {
@@ -61,16 +75,16 @@
   </script>
   <!-- ===== END OF SESSION CHECK SCRIPT ===== -->
 
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm shadow-lg p-4 sm:p-6">
+  <!-- UPDATED: Navbar with larger logo and padding -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm shadow-lg p-5 sm:p-7">
     <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-3xl font-extrabold text-red-600 tracking-wider">MOVIEROLL</h1>
+      <h1 class="text-4xl font-extrabold text-red-600 tracking-wider">MOVIEROLL</h1>
     </div>
   </nav>
 
   <main class="relative min-h-screen flex items-center justify-center py-24 px-4 overflow-hidden">
     <!-- Background Image and Overlays -->
     <div class="hero-bg">
-      <!-- FIXED: Corrected placeholder URL -->
       <img src="bgimage.png" onerror="this.src='https://placehold.co/1600x900/111/444?text=MOVIEROLL'">
       <div class="gradient-overlay-t-b"></div>
       <div class="gradient-overlay-l-r"></div>
@@ -78,12 +92,13 @@
     </div>
 
     <!-- Form Container -->
-    <!-- ANIMATION: Added 'form-container' class for load animation -->
-    <div class="form-container relative z-10 w-full max-w-lg bg-black/80 backdrop-blur-md rounded-xl shadow-2xl p-6 sm:p-10">
+    <!-- UPDATED: Larger container, padding, and border-radius -->
+    <div class="form-container relative z-10 w-full max-w-xl bg-black/80 backdrop-blur-md rounded-2xl shadow-2xl p-8 sm:p-12">
       <!-- Tabs -->
-      <div class="flex mb-6 border-b border-gray-700">
+      <!-- UPDATED: Tab styles for active/inactive -->
+      <div class="flex mb-8 border-b border-gray-700">
         <button id="show-login-btn" class="flex-1 py-3 text-lg font-bold text-white border-b-4 border-red-600">Renew / Login</button>
-        <button id="show-apply-btn" class="flex-1 py-3 text-lg font-bold text-gray-500 border-b-4 border-transparent hover:text-gray-300">Apply Now (₹10)</button>
+        <button id="show-apply-btn" class="flex-1 py-3 text-lg font-medium text-gray-400 border-b-4 border-transparent hover:text-white transition-colors">Apply (₹10/mo)</button>
       </div>
 
       <!-- Message Box -->
@@ -91,48 +106,52 @@
 
       <!-- LOGIN FORM -->
       <div id="login-view">
-        <form id="login-form" class="space-y-5">
-          <h2 class="text-3xl font-bold text-center mb-6">Access Your Account</h2>
+        <form id="login-form" class="space-y-6">
+          <!-- UPDATED: Larger heading and margin -->
+          <h2 class="text-4xl font-bold text-center mb-8">Access Your Account</h2>
           <div>
-            <label class="block text-sm mb-1">Username</label>
+            <!-- UPDATED: Label styling -->
+            <label class="block text-sm mb-2 font-medium text-gray-300">Username</label>
             <input id="username" class="form-input" placeholder="Enter username" required />
           </div>
           <div>
-            <label class="block text-sm mb-1">Password</label>
+            <label class="block text-sm mb-2 font-medium text-gray-300">Password</label>
             <input id="password" type="password" class="form-input" placeholder="Enter password" required />
           </div>
-          <!-- ANIMATION: Added transition and active:scale -->
-          <button id="login-submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-md transition-all duration-150 active:scale-[.98]">Access & Watch</button>
+          <!-- UPDATED: Larger button -->
+          <button id="login-submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white text-lg font-bold py-4 px-4 rounded-md transition-all duration-150 active:scale-[.98]">Access & Watch</button>
         </form>
       </div>
 
       <!-- APPLY FORM -->
       <div id="apply-view" class="hidden">
-        <form id="apply-form" class="space-y-5">
-          <h2 class="text-3xl font-bold text-center mb-2">Get Access for ₹10/Month</h2>
+        <form id="apply-form" class="space-y-6">
+          <!-- UPDATED: Larger heading and margin -->
+          <h2 class="text-4xl font-bold text-center mb-8">Get Access for ₹10/Month</h2>
           <div>
-            <label class="block text-sm mb-1">Full Name</label>
+            <label class="block text-sm mb-2 font-medium text-gray-300">Full Name</label>
             <input id="apply-name" class="form-input" placeholder="Your full name" required />
           </div>
           <div>
-            <label class="block text-sm mb-1">WhatsApp Number</label>
+            <label class="block text-sm mb-2 font-medium text-gray-300">WhatsApp Number</label>
             <input id="apply-phone" class="form-input" placeholder="10-digit number" required />
           </div>
           <div>
-            <label class="block text-sm mb-1">Email Address</label>
+            <label class="block text-sm mb-2 font-medium text-gray-300">Email Address</label>
             <input id="apply-email" type="email" class="form-input" placeholder="your@email.com" required />
           </div>
-          <!-- ANIMATION: Added transition and active:scale -->
-          <button id="apply-submit-btn" type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md transition-all duration-150 active:scale-[.98]">Apply Now</button>
+          <!-- UPDATED: Larger button and changed to red -->
+          <button id="apply-submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white text-lg font-bold py-4 px-4 rounded-md transition-all duration-150 active:scale-[.98]">Apply Now</tton>
         </form>
       </div>
       
       <!-- SUCCESS VIEW -->
       <div id="success-view" class="hidden text-center">
-        <h2 class="text-3xl font-bold text-center mb-6 text-green-400">Access Granted!</h2>
+        <!-- UPDATED: Larger heading -->
+        <h2 class="text-4xl font-bold text-center mb-6 text-green-400">Access Granted!</h2>
         <p class="text-lg text-gray-300 mb-8">Your access is verified. You will be redirected to homepage in <span id="countdown">5</span> seconds.</p>
-        <!-- ANIMATION: Added transition and active:scale -->
-        <button id="go-to-homepage-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md transition-all duration-150 active:scale-[.98]">
+        <!-- UPDATED: Larger button -->
+        <button id="go-to-homepage-btn" class="w-full bg-green-600 hover:bg-green-700 text-white text-lg font-bold py-4 px-4 rounded-md transition-all duration-150 active:scale-[.98]">
           Let's Go! Start Watching
         </button>
       </div>
@@ -198,12 +217,13 @@
       applyView.classList.add('hidden');
       successView.classList.add('hidden');
       
-      // FIXED: Full tab style switching
-      showLoginBtn.classList.add('text-white', 'border-red-600');
-      showLoginBtn.classList.remove('text-gray-500');
+      // Style active tab
+      showLoginBtn.classList.add('text-white', 'font-bold', 'border-red-600');
+      showLoginBtn.classList.remove('text-gray-400', 'font-medium', 'border-transparent');
       
-      showApplyBtn.classList.remove('text-white', 'border-red-600');
-      showApplyBtn.classList.add('text-gray-500');
+      // Style inactive tab
+      showApplyBtn.classList.add('text-gray-400', 'font-medium', 'border-transparent');
+      showApplyBtn.classList.remove('text-white', 'font-bold', 'border-red-600');
       
       hideMessage();
     };
@@ -213,12 +233,13 @@
       loginView.classList.add('hidden');
       successView.classList.add('hidden');
       
-      // FIXED: Full tab style switching
-      showApplyBtn.classList.add('text-white', 'border-red-600');
-      showApplyBtn.classList.remove('text-gray-500');
-      
-      showLoginBtn.classList.remove('text-white', 'border-red-600');
-      showLoginBtn.classList.add('text-gray-500');
+      // Style active tab
+      showApplyBtn.classList.add('text-white', 'font-bold', 'border-red-600');
+      showApplyBtn.classList.remove('text-gray-400', 'font-medium', 'border-transparent');
+
+      // Style inactive tab
+      showLoginBtn.classList.add('text-gray-400', 'font-medium', 'border-transparent');
+      showLoginBtn.classList.remove('text-white', 'font-bold', 'border-red-600');
       
       hideMessage();
     };
@@ -327,3 +348,4 @@
   </script>
 </body>
 </html>
+
