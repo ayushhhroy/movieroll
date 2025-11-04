@@ -1,329 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MOVIEROLL - Subscription</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
-  <style>
-    body { background-color:#141414;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;}
-    .hero-bg{position:absolute;inset:0;z-index:-1;}
-    .hero-bg img{width:100%;height:100%;object-fit:cover;}
-    .gradient-overlay-t-b{position:absolute;inset:0;background:linear-gradient(to top,#141414,rgba(20,20,20,0.5),transparent);}
-    .gradient-overlay-l-r{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.6),transparent);}
-    .gradient-overlay-bottom{position:absolute;bottom:0;left:0;right:0;height:8rem;background:linear-gradient(to top,#141414,transparent);}
-    .form-input{background-color:#333;border:1px solid #555;border-radius:.375rem;padding:.75rem 1rem;width:100%;color:#fff;transition:.2s;}
-    .form-input:focus{outline:none;border-color:#e50914;box-shadow:0 0 0 2px rgba(229,9,20,.3);}
-    .form-input::placeholder{color:#999;}
-
-    /* --- Animation: Page Load Fade-in --- */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .form-container {
-      animation: fadeInUp 0.6s ease-out 0.2s forwards;
-      opacity: 0; /* Start hidden for animation */
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jawan - MOVIEROLL</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     
-    /* --- Animation: Message Box --- */
-    @keyframes slideInFade {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-message {
-      animation: slideInFade 0.4s ease-out forwards;
-    }
-  </style>
+    <!-- Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome (Future use) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <style>
+        body {
+            background-color: #141414;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* 16:9 aspect ratio wrapper for the iframe */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            width: 100%;
+            background-color: #000;
+            border-radius: 0.5rem; /* rounded-lg */
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0; /* Remove border */
+        }
+    </style>
 </head>
 <body class="antialiased">
 
-  <!-- ===== SESSION CHECK SCRIPT ===== -->
-  <script>
-    (function() {
-      try {
-        const session = localStorage.getItem('movieroll_session');
-        if (session) {
-          const data = JSON.parse(session);
-          if (data.loggedIn === true && data.expiry && data.expiry > Date.now()) {
-            // User has a valid session, redirect to homepage
-            window.top.location.href = 'homepage.html';
-          } else {
-            // Session invalid or expired, remove it
-            localStorage.removeItem('movieroll_session');
-          }
-        }
-      } catch (e) {
-        console.error('Session check failed:', e);
-      }
-    })();
-  </script>
-  <!-- ===== END OF SESSION CHECK SCRIPT ===== -->
+    <!-- Header / Navbar -->
+    <nav class="sticky top-0 z-50 bg-[#141414] shadow-md p-4 sm:p-6">
+        <div class="container mx-auto">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <a href="#" class="text-2xl sm:text-3xl font-extrabold text-red-600 tracking-wider">MOVIEROLL</a>
+                
+                <!-- Homepage link -->
+                <a href="index.html" class="text-white hover:text-gray-300 font-semibold">
+                    &larr; Back to Home
+                </a>
+            </div>
+        </div>
+    </nav>
 
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm shadow-lg p-4 sm:p-6">
-    <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-3xl font-extrabold text-red-600 tracking-wider">MOVIEROLL</h1>
-    </div>
-  </nav>
+    <!-- Main Content -->
+    <main class="container mx-auto">
+        
+        <!-- === VIDEO PLAYER SECTION === -->
+        <div class="video-wrapper shadow-lg">
+            <!-- 
+                WARNING: Google Drive लिंक 'src' में इस्तेमाल किया गया है। 
+                अगर इस ड्राइव फ़ाइल को Google द्वारा मैलवेयर, कॉपीराइट उल्लंघन, 
+                या किसी अन्य कारण से फ़्लैग किया गया है, 
+                तो आपकी पूरी वेबसाइट "खतरनाक" दिखाई देगी। 
+                यह एक बहुत बड़ा जोखिम है।
+            -->
+            <iframe 
+                src="https://drive.google.com/file/d/1FAeemUecDo8uuTxCbv-Jo55O9jUJ7tdn/preview" 
+                allow="autoplay; fullscreen"
+                allowfullscreen="true">
+            </iframe>
+        </div>
 
-  <main class="relative min-h-screen flex items-center justify-center py-24 px-4 overflow-hidden">
-    <!-- Background Image and Overlays -->
-    <div class="hero-bg">
-      <!-- FIXED: Corrected placeholder URL -->
-      <img src="bgimage.png" onerror="this.src='https://placehold.co/1600x900/111/444?text=MOVIEROLL'">
-      <div class="gradient-overlay-t-b"></div>
-      <div class="gradient-overlay-l-r"></div>
-      <div class="gradient-overlay-bottom"></div>
-    </div>
-
-    <!-- Form Container -->
-    <!-- ANIMATION: Added 'form-container' class for load animation -->
-    <div class="form-container relative z-10 w-full max-w-lg bg-black/80 backdrop-blur-md rounded-xl shadow-2xl p-6 sm:p-10">
-      <!-- Tabs -->
-      <div class="flex mb-6 border-b border-gray-700">
-        <button id="show-login-btn" class="flex-1 py-3 text-lg font-bold text-white border-b-4 border-red-600">Renew / Login</button>
-        <button id="show-apply-btn" class="flex-1 py-3 text-lg font-bold text-gray-500 border-b-4 border-transparent hover:text-gray-300">Apply Now (₹10)</button>
-      </div>
-
-      <!-- Message Box -->
-      <div id="message-box" class="hidden p-4 mb-4 rounded-md text-sm"></div>
-
-      <!-- LOGIN FORM -->
-      <div id="login-view">
-        <form id="login-form" class="space-y-5">
-          <h2 class="text-3xl font-bold text-center mb-6">Access Your Account</h2>
-          <div>
-            <label class="block text-sm mb-1">Username</label>
-            <input id="username" class="form-input" placeholder="Enter username" required />
-          </div>
-          <div>
-            <label class="block text-sm mb-1">Password</label>
-            <input id="password" type="password" class="form-input" placeholder="Enter password" required />
-          </div>
-          <!-- ANIMATION: Added transition and active:scale -->
-          <button id="login-submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-md transition-all duration-150 active:scale-[.98]">Access & Watch</button>
-        </form>
-      </div>
-
-      <!-- APPLY FORM -->
-      <div id="apply-view" class="hidden">
-        <form id="apply-form" class="space-y-5">
-          <h2 class="text-3xl font-bold text-center mb-2">Get Access for ₹10/Month</h2>
-          <div>
-            <label class="block text-sm mb-1">Full Name</label>
-            <input id="apply-name" class="form-input" placeholder="Your full name" required />
-          </div>
-          <div>
-            <label class="block text-sm mb-1">WhatsApp Number</label>
-            <input id="apply-phone" class="form-input" placeholder="10-digit number" required />
-          </div>
-          <div>
-            <label class="block text-sm mb-1">Email Address</label>
-            <input id="apply-email" type="email" class="form-input" placeholder="your@email.com" required />
-          </div>
-          <!-- ANIMATION: Added transition and active:scale -->
-          <button id="apply-submit-btn" type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md transition-all duration-150 active:scale-[.98]">Apply Now</button>
-        </form>
-      </div>
-      
-      <!-- SUCCESS VIEW -->
-      <div id="success-view" class="hidden text-center">
-        <h2 class="text-3xl font-bold text-center mb-6 text-green-400">Access Granted!</h2>
-        <p class="text-lg text-gray-300 mb-8">Your access is verified. You will be redirected to homepage in <span id="countdown">5</span> seconds.</p>
-        <!-- ANIMATION: Added transition and active:scale -->
-        <button id="go-to-homepage-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md transition-all duration-150 active:scale-[.98]">
-          Let's Go! Start Watching
-        </button>
-      </div>
-    </div>
-  </main>
-
-  <script>
-    const APPLY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl7G-K7CHvszrrmUeH1_kVjRLISXDpkhjwXkbIsqcZ4QI5PN5aKrQQBjeM6iMbdrRc/exec';
-    const LOGIN_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyf2iVL8_i7dgCt5omjPaDQlZXcSZE5vlp01_xanSnCEmnGimwqTk3rZbo5Yf_d7s0/exec';
-
-    // --- Element References ---
-    const showLoginBtn = document.getElementById('show-login-btn');
-    const showApplyBtn = document.getElementById('show-apply-btn');
-    const loginView = document.getElementById('login-view');
-    const applyView = document.getElementById('apply-view');
-    const successView = document.getElementById('success-view'); 
-    const messageBox = document.getElementById('message-box');
-    const countdownElement = document.getElementById('countdown');
-
-    // --- Show Message Function ---
-    function showMessage(type, text) {
-      // Base classes
-      messageBox.className = 'p-4 mb-4 rounded-md text-sm text-white';
-      // Add color class
-      messageBox.classList.add(type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600');
-      messageBox.textContent = text;
-      
-      // ANIMATION: Add animation class
-      messageBox.classList.remove('hidden');
-      messageBox.classList.add('animate-message');
-      
-      // Remove animation class after it finishes to allow re-triggering
-      messageBox.addEventListener('animationend', () => {
-          messageBox.classList.remove('animate-message');
-      }, { once: true }); // 'once: true' automatically removes the listener
-    }
+        <!-- === MOVIE DETAILS SECTION === -->
+        <!-- Details for "Jawan" -->
+<div class="px-4 sm:px-6 py-8">
+    <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Animal</h1>
     
-    // --- Hide Message Function (used by tabs) ---
-    function hideMessage() {
-      messageBox.classList.add('hidden');
-      messageBox.classList.remove('animate-message');
-    }
+    <!-- Meta Info (Year, Rating, Duration) -->
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-gray-400 mb-6">
+        <span>2023</span>
+        <!-- Updated Rating -->
+        <span class="border-l border-gray-600 pl-4">A</span>
+        <!-- Updated Duration -->
+        <span class="border-l border-gray-600 pl-4">3h 21m</span>
+        <!-- Updated Genres -->
+        <span class="border-l border-gray-600 pl-4">Action / Crime / Drama</span>
+    </div>
 
-    // --- Auto Redirect Countdown ---
-    function startCountdown() {
-      let countdown = 5;
-      countdownElement.textContent = countdown;
-      
-      const countdownInterval = setInterval(() => {
-        countdown--;
-        countdownElement.textContent = countdown;
-        
-        if (countdown <= 0) {
-          clearInterval(countdownInterval);
-          window.top.location.href = 'homepage.html';
+    <!-- Description / Plot Summary -->
+    <p class="text-lg text-gray-200 mb-8 leading-relaxed">
+        <!-- Updated Plot Summary -->
+        A man's intense relationship with his tycoon father fuels a violent quest for revenge when he learns of an assassination attempt on his father, leading him into a brutal gang war.
+    </p>
+
+    <!-- About / Cast / Director -->
+    <div class="mt-12 text-gray-400">
+        <!-- Updated Cast -->
+        <p class="mb-2"><span class="font-bold text-gray-200">Starring:</span> Ranbir Kapoor, Anil Kapoor, Bobby Deol, Rashmika Mandanna</p>
+        <!-- Updated Director -->
+        <p class="mb-2"><span class="font-bold text-gray-200">Director:</span> Sandeep Reddy Vanga</p>
+        <!-- Updated Genres -->
+        <p><span class="font-bold text-gray-200">Genres:</span> Action, Crime, Drama</p>
+    </div>
+</div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="container mx-auto px-4 sm:px-6 py-8 mt-12 border-t border-gray-800">
+        <div class="text-center text-gray-500 text-sm">
+            Movieroll Exclusive Premiere
+        </div>
+    </footer>
+
+    
+    <!-- === YOUTUBE-STYLE AUTO-ROTATE SCRIPT === -->
+    <script>
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange); // Safari
+        document.addEventListener('mozfullscreenchange', handleFullscreenChange); // Firefox
+        document.addEventListener('MSFullscreenChange', handleFullscreenChange); // IE/Edge
+
+        function handleFullscreenChange() {
+            const isFullscreen = document.fullscreenElement || 
+                                   document.webkitFullscreenElement || 
+                                   document.mozFullScreenElement ||
+                                   document.msFullscreenElement;
+
+            if (isFullscreen) {
+                // On entering fullscreen, lock to landscape
+                console.log("Entering fullscreen, locking to landscape...");
+                if (screen.orientation && screen.orientation.lock) {
+                    screen.orientation.lock('landscape').catch(err => {
+                        console.warn("Orientation lock failed:", err.message);
+                    });
+                }
+            } else {
+                // On exiting fullscreen, unlock orientation
+                console.log("Exiting fullscreen, unlocking orientation...");
+                if (screen.orientation && screen.orientation.unlock) {
+                    screen.orientation.unlock();
+                }
+            }
         }
-      }, 1000);
-    }
+    </script>
 
-    // --- Tab Switching ---
-    showLoginBtn.onclick = () => {
-      loginView.classList.remove('hidden');
-      applyView.classList.add('hidden');
-      successView.classList.add('hidden');
-      
-      // FIXED: Full tab style switching
-      showLoginBtn.classList.add('text-white', 'border-red-600');
-      showLoginBtn.classList.remove('text-gray-500');
-      
-      showApplyBtn.classList.remove('text-white', 'border-red-600');
-      showApplyBtn.classList.add('text-gray-500');
-      
-      hideMessage();
-    };
-
-    showApplyBtn.onclick = () => {
-      applyView.classList.remove('hidden');
-      loginView.classList.add('hidden');
-      successView.classList.add('hidden');
-      
-      // FIXED: Full tab style switching
-      showApplyBtn.classList.add('text-white', 'border-red-600');
-      showApplyBtn.classList.remove('text-gray-500');
-      
-      showLoginBtn.classList.remove('text-white', 'border-red-600');
-      showLoginBtn.classList.add('text-gray-500');
-      
-      hideMessage();
-    };
-
-    // --- Apply Form ---
-    document.getElementById('apply-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = document.getElementById('apply-submit-btn');
-      btn.disabled = true; btn.textContent = 'Submitting...';
-      showMessage('info', 'Sending your application...');
-      try {
-        const res = await fetch(APPLY_SCRIPT_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' }, // Keep as text/plain if your script expects it
-          body: JSON.stringify({
-            name: document.getElementById('apply-name').value,
-            phone: document.getElementById('apply-phone').value,
-            email: document.getElementById('apply-email').value
-          })
-        });
-        const data = await res.json();
-        if (data.result === 'success') {
-          showMessage('success', 'Success! We will contact you on WhatsApp soon.');
-          e.target.reset();
-        } else throw new Error(data.message || 'Unknown error');
-      } catch (err) {
-        showMessage('error', 'Error submitting form. Please try again.');
-        console.error('Apply error:', err);
-      }
-      btn.disabled = false; btn.textContent = 'Apply Now';
-    });
-
-    // --- Login Form ---
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = document.getElementById('login-submit-btn');
-      btn.disabled = true; btn.textContent = 'Verifying...';
-      showMessage('info', 'Checking your details...');
-
-      // Clear any old session first
-      try {
-        localStorage.removeItem('movieroll_session');
-      } catch (lsError) {
-        console.warn("Could not clear localStorage:", lsError);
-      }
-      
-      const username = document.getElementById('username').value;
-
-      try {
-        const res = await fetch(LOGIN_SCRIPT_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' }, // Keep as text/plain if your script expects it
-          body: JSON.stringify({
-            username: username,
-            password: document.getElementById('password').value
-          })
-        });
-        
-        if (!res.ok) {
-            throw new Error(`Network response was not ok (status: ${res.status})`);
-        }
-
-        const data = await res.json();
-        
-        if (data.result === 'success') {
-          showMessage('success', 'Success! Your access is confirmed.');
-          
-          // Set a 30-day expiry for the session
-          const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days
-          try {
-            localStorage.setItem('movieroll_session', JSON.stringify({ 
-              loggedIn: true, 
-              username: username, 
-              expiry: expiry 
-            }));
-          } catch (lsError) {
-            console.warn("Could not set localStorage:", lsError);
-            // Non-critical error, but good to know
-            showMessage('error', 'Login OK, but session could not be saved.');
-          }
-          
-          // Hide login form and show success view
-          loginView.classList.add('hidden');
-          applyView.classList.add('hidden');
-          successView.classList.remove('hidden');
-          
-          // Start countdown for auto-redirect
-          startCountdown();
-          
-        } else {
-          throw new Error(data.message || 'Invalid username or password');
-        }
-      } catch (err) {
-        showMessage('error', err.message);
-        console.error('Login error:', err);
-        btn.disabled = false;
-        btn.textContent = 'Access & Watch';
-      }
-    });
-
-    // --- "Go to Homepage" button ---
-    document.getElementById('go-to-homepage-btn').addEventListener('click', () => {
-        window.top.location.href = 'homepage.html';
-    });
-
-  </script>
 </body>
 </html>
