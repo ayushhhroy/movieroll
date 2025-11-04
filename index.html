@@ -31,10 +31,11 @@
     }
     .form-input::placeholder { color: #888; }
 
-    /* --- NEW: OTP Input Styles --- */
+    /* --- UPDATED: OTP Input Styles --- */
     .otp-input {
-      width: 2.75rem; /* 44px */
-      height: 2.75rem; /* 44px */
+      /* width: 2.75rem; */ /* Removed fixed width */
+      width: 100%; /* Use full width of grid column */
+      aspect-ratio: 1 / 1; /* Make it square */
       text-align: center;
       font-size: 1.25rem; /* 20px */
       font-weight: 700;
@@ -54,16 +55,10 @@
     /* Responsive adjustments */
     @media (min-width: 640px) {
       .otp-input {
-        width: 3.5rem; /* 56px */
-        height: 3.5rem; /* 56px */
         font-size: 1.5rem; /* 24px */
+        /* Height will be set by aspect-ratio */
       }
     }
-
-    /* --- REMOVED CSS BLOCK --- 
-       The .otp-input fields are now type="tel", 
-       so the rules to hide number spinners are no longer needed.
-    */
 
     /* --- Animation: Page Load Fade-in --- */
     @keyframes fadeInUp {
@@ -84,7 +79,7 @@
       animation: slideInFade 0.4s ease-out forwards;
     }
 
-    /* --- NEW: Loader Spinner --- */
+    /* --- Loader Spinner --- */
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
@@ -157,8 +152,8 @@
           </div>
           <div>
             <label class="block text-sm mb-2 font-medium text-gray-300">Password (6-Digit PIN)</label>
-            <!-- NEW: 6-Digit OTP Container -->
-            <div id="otp-container" class="flex justify-between space-x-2 sm:space-x-3">
+            <!-- UPDATED: Switched to grid for responsive boxes -->
+            <div id="otp-container" class="grid grid-cols-6 gap-2 sm:gap-3">
               <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" required />
               <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" required />
               <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" required />
@@ -203,7 +198,7 @@
     </div>
   </main>
 
-  <!-- NEW: Full-screen Loader Overlay -->
+  <!-- Full-screen Loader Overlay -->
   <div id="loader-overlay" class="hidden fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center">
     <div class="loader-spinner"></div>
     <p id="loader-text" class="text-white text-xl font-bold mt-6">Checking...</p>
@@ -225,7 +220,7 @@
     const loaderOverlay = document.getElementById('loader-overlay');
     const loaderText = document.getElementById('loader-text');
 
-    // --- NEW: Loader Functions ---
+    // --- Loader Functions ---
     function showLoader(text) {
       loaderText.textContent = text;
       loaderOverlay.classList.remove('hidden');
@@ -303,7 +298,6 @@
       e.preventDefault();
       const btn = document.getElementById('apply-submit-btn');
       btn.disabled = true;
-      // UPDATED: Show loader instead of inline message
       showLoader('Submitting your application...');
       hideMessage();
 
@@ -326,7 +320,6 @@
         showMessage('error', `Error: ${err.message}. Please try again.`);
         console.error('Apply error:', err);
       }
-      // UPDATED: Hide loader and re-enable button
       hideLoader();
       btn.disabled = false;
     });
@@ -337,21 +330,18 @@
       const btn = document.getElementById('login-submit-btn');
       hideMessage();
       
-      // NEW: Get password from OTP boxes
       const otpInputs = [...otpContainer.querySelectorAll('.otp-input')];
       let password = '';
       otpInputs.forEach(input => {
         password += input.value;
       });
 
-      // NEW: Validate OTP length
       if (password.length !== 6) {
         showMessage('error', 'Please enter all 6 digits of your password.');
         return;
       }
 
       btn.disabled = true;
-      // UPDATED: Show loader
       showLoader('Verifying your details...');
       
       try {
@@ -368,7 +358,7 @@
           headers: { 'Content-Type': 'text/plain' },
           body: JSON.stringify({
             username: username,
-            password: password // Use the combined password
+            password: password 
           })
         });
         
@@ -379,10 +369,9 @@
         const data = await res.json();
         
         if (data.result === 'success') {
-          // On success, loader will be hidden by the view change
           showMessage('success', 'Success! Your access is confirmed.');
           
-          const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days
+          const expiry = Date.Nnow() + 30 * 24 * 60 * 60 * 1000; // 30 days
           try {
             localStorage.setItem('movieroll_session', JSON.stringify({ 
               loggedIn: true, 
@@ -399,15 +388,12 @@
           successView.classList.remove('hidden');
           
           startCountdown();
-          // Keep loader on, it will be covered by the success view
           
         } else {
-          // On fail, hide loader and show error
           hideLoader();
           throw new Error(data.message || 'Invalid username or password');
         }
       } catch (err) {
-        // On network error, hide loader and show error
         hideLoader();
         showMessage('error', err.message);
         console.error('Login error:', err);
@@ -420,7 +406,7 @@
         window.top.location.href = 'homepage.html';
     });
 
-    // --- NEW: OTP Input Logic ---
+    // --- OTP Input Logic ---
     otpContainer.addEventListener('input', (e) => {
       const target = e.target;
       const val = target.value;
@@ -471,8 +457,6 @@
             inputs[lastFilledIndex].focus();
         }
     });
-
-
   </script>
 </body>
 </html>
