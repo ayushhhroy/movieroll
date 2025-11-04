@@ -128,9 +128,10 @@
         <section class="mb-12 animate-on-load" style="transition-delay: 600ms;">
             <h2 class="text-2xl font-bold mb-3">Action Bollywood</h2>
             <div class="relative">
+                <!-- UPDATE: `movie-row` class par event listeners add kiye jayenge JS se -->
                 <div class="movie-row flex overflow-x-auto overflow-y-hidden space-x-3 sm:space-x-4 p-2 -m-2">
                     
-                    <!-- === MOVIE CARD (UPDATE: Size changed to w-36 sm:w-44 md:w-52) === -->
+                    <!-- === MOVIE CARD (Size changed to w-36 sm:w-44 md:w-52) === -->
                     <a href="animal.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                             <img src="animal-img.webp" alt="Animal" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Animal'">
@@ -138,42 +139,36 @@
                     </a>
                     <!-- === END MOVIE CARD === -->
 
-                    <!-- UPDATE: Size changed -->
                     <a href="pathaan.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                             <img src="pathan-img.webp" alt="Pathaan" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Pathaan'">
                         </div>
                     </a>
                     
-                    <!-- UPDATE: Size changed -->
                     <a href="BrahmastraPartOneShiva.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                             <img src="brahmastra-img.webp" alt="Brahmastra" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Brahmastra'">
                         </div>
                     </a>
                     
-                    <!-- UPDATE: Size changed -->
                     <a href="jawan.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                             <img src="Jawan-img.webp" alt="Jawan" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Jawan'">
                         </div>
                     </a>
                     
-                    <!-- UPDATE: Size changed -->
                     <a href="#" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                             <img src="tiger3.webp" alt="Movie 5" class="w-full object-cover aspect-[2/3]">
                         </div>
                     </a>
                     
-                    <!-- UPDATE: Size changed -->
                     <a href="#" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                             <img src="tigerzindahai-img.webp" alt="Movie 5" class="w-full object-cover aspect-[2/3]">
                         </div>
                     </a>
                     
-                    <!-- UPDATE: Size changed -->
                     <a href="ekthatiger.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                             <img src="ekthatiger-img.webp" alt="Movie 5" class="w-full object-cover aspect-[2/3]">
@@ -189,7 +184,6 @@
             <div class="relative">
                 <div class="movie-row flex overflow-x-auto overflow-y-hidden space-x-3 sm:space-x-4 p-2 -m-2">
                         
-                    <!-- UPDATE: Size changed -->
                     <a href="kabirsingh.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                             <img src="kabirsign-img.webp" alt="Action 1" class="w-full object-cover aspect-[2/3]">
@@ -237,15 +231,6 @@
             mobileMenu.classList.toggle('hidden');
         });
 
-        // --- Page Load Animations ---
-        // Jaise hi page load hota hai, sabhi 'animate-on-load' elements par 'loaded' class add karo
-        window.addEventListener('load', () => {
-            const elements = document.querySelectorAll('.animate-on-load');
-            elements.forEach((el) => {
-                el.classList.add('loaded');
-            });
-        });
-
         // --- Navbar Scroll Effect ---
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
@@ -260,39 +245,90 @@
             }
         });
 
-        // --- (NEW) Movie Row Auto-Scroll (Slideshow) ---
-        // Har 10 seconds me rows ko auto-scroll karega
-        setInterval(() => {
+        // --- Page Load Animations & Auto-Scroll Initializer ---
+        // 'load' event ka wait karega taaki images load ho jayein aur card ki width sahi mile
+        window.addEventListener('load', () => {
+            
+            // 1. Animations chalao
+            const elements = document.querySelectorAll('.animate-on-load');
+            elements.forEach((el) => {
+                el.classList.add('loaded');
+            });
+
+            // 2. Auto-Scroll logic setup karo
             const rows = document.querySelectorAll('.movie-row');
             
             rows.forEach(row => {
-                const firstCard = row.querySelector('a');
-                if (!firstCard) return; // Row me card nahi hai
+                // Har row ke liye shuru me auto-scroll start karo
+                startAutoScroll(row);
 
-                // Card ki width + gap (sm:space-x-4 = 1rem = 16px)
-                // Hum 16px ka gap assume kar rahe hain
-                const cardWidth = firstCard.offsetWidth;
-                const gap = 16; // 1rem
-                const scrollAmount = cardWidth + gap;
-
-                // Current scroll position
-                const currentScroll = row.scrollLeft;
-                const maxScroll = row.scrollWidth - row.clientWidth;
-
-                let nextScroll = currentScroll + scrollAmount;
-
-                // Check if the next scroll will go past the end
-                // We add a small buffer (1px) to handle rounding issues
-                if (nextScroll > maxScroll + 1) {
-                    // Agar end tak pahunch gaye, toh wapas start me jao
-                    row.scrollTo({ left: 0, behavior: 'smooth' });
-                } else {
-                    // Warna next position par scroll karo
-                    row.scrollTo({ left: nextScroll, behavior: 'smooth' });
-                }
+                // Manual interaction ke liye event listeners add karo
+                // 'wheel' = mouse wheel, 'mousedown' = click & drag, 'touchstart' = touch screen
+                ['wheel', 'mousedown', 'touchstart'].forEach(eventType => {
+                    row.addEventListener(eventType, () => {
+                        handleManualInteraction(row);
+                    });
+                });
             });
-        }, 5000); // 10,000ms = 10 seconds
+        });
+
+
+        // --- Auto-Scroll Helper Functions ---
+
+        // Function: Ek row ko scroll karne ka logic
+        function autoScrollRow(row) {
+            const firstCard = row.querySelector('a');
+            if (!firstCard) return; // Row me card nahi hai
+
+            const cardWidth = firstCard.offsetWidth;
+            const gap = 16; // 1rem (sm:space-x-4 se)
+            const scrollAmount = cardWidth + gap;
+            const currentScroll = row.scrollLeft;
+            const maxScroll = row.scrollWidth - row.clientWidth;
+            let nextScroll = currentScroll + scrollAmount;
+
+            // Check karo ki scroll end tak pahunch gaya hai ya nahi
+            if (nextScroll > maxScroll + 1) { // 1px buffer
+                // Agar haan, toh wapas start me jao
+                row.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+                // Agar nahi, toh next position par jao
+                row.scrollTo({ left: nextScroll, behavior: 'smooth' });
+            }
+        }
+
+        // Function: Ek row ke liye auto-scroll interval start karna
+        function startAutoScroll(row) {
+            // Purana interval clear karo (agar hai toh)
+            if (row.autoScrollInterval) {
+                clearInterval(row.autoScrollInterval);
+            }
+            // Naya interval start karo
+            row.autoScrollInterval = setInterval(() => {
+                autoScrollRow(row);
+            }, 10000); // 10 seconds
+        }
+
+        // Function: Manual interaction (scroll/touch) ko handle karna
+        function handleManualInteraction(row) {
+            // 1. Current auto-scroll ko roko
+            if (row.autoScrollInterval) {
+                clearInterval(row.autoScrollInterval);
+            }
+
+            // 2. Purana inactivity timer clear karo (agar user lagatar scroll kar raha hai)
+            if (row.inactivityTimer) {
+                clearTimeout(row.inactivityTimer);
+            }
+
+            // 3. Naya timer start karo
+            // Jab user 15 second tak koi interaction nahi karega, tab auto-scroll resume hoga
+            row.inactivityTimer = setTimeout(() => {
+                startAutoScroll(row);
+            }, 5000); // 15 seconds ka delay
+        }
     </script>
 
 </body>
 </html>
+
