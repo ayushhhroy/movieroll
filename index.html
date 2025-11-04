@@ -80,85 +80,95 @@
   </main>
 
   <script>
-    const APPLY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl7G-K7CHvszrrmUeH1_kVjRLISXDpkhjwXkbIsqcZ4QI5PN5aKrQQBjeM6iMbdrRc/exec';
-    const LOGIN_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzZRcth46dUy1CDYc_j9e7u61df_8sHqhYnU8s110ZqgAePcclX8qLTPz4UKLedfuoc/exec';
+const APPLY_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl7G-K7CHvszrrmUeH1_kVjRLISXDpkhjwXkbIsqcZ4QI5PN5aKrQQBjeM6iMbdrRc/exec';
+const LOGIN_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwq79lg90uAKfH7KyVbNGj0-uEATtuRt5LHsVQbTq3rGzh-rtMy7HABGThOk30VHACD/exec';
 
-    const showLoginBtn = document.getElementById('show-login-btn');
-    const showApplyBtn = document.getElementById('show-apply-btn');
-    const loginView = document.getElementById('login-view');
-    const applyView = document.getElementById('apply-view');
-    const messageBox = document.getElementById('message-box');
+const showLoginBtn = document.getElementById('show-login-btn');
+const showApplyBtn = document.getElementById('show-apply-btn');
+const loginView = document.getElementById('login-view');
+const applyView = document.getElementById('apply-view');
+const messageBox = document.getElementById('message-box');
 
-    function showMessage(type, text) {
-      messageBox.className = 'p-4 mb-4 rounded-md text-sm text-white';
-      messageBox.classList.add(type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600');
-      messageBox.textContent = text;
+function showMessage(type, text) {
+  messageBox.className = 'p-4 mb-4 rounded-md text-sm text-white';
+  messageBox.classList.add(type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600');
+  messageBox.textContent = text;
+  messageBox.classList.remove('hidden');
+}
+
+showLoginBtn.onclick = () => {
+  loginView.classList.remove('hidden'); applyView.classList.add('hidden');
+  showLoginBtn.classList.add('text-white', 'border-red-600');
+  showApplyBtn.classList.remove('text-white', 'border-red-600');
+  messageBox.classList.add('hidden');
+};
+
+showApplyBtn.onclick = () => {
+  applyView.classList.remove('hidden'); loginView.classList.add('hidden');
+  showApplyBtn.classList.add('text-white', 'border-red-600');
+  showLoginBtn.classList.remove('text-white', 'border-red-600');
+  messageBox.classList.add('hidden');
+};
+
+// --- APPLY FORM ---
+document.getElementById('apply-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('apply-submit-btn');
+  btn.disabled = true; btn.textContent = 'Submitting...';
+  showMessage('info', 'Sending your application...');
+  try {
+    const res = await fetch(APPLY_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        name: document.getElementById('apply-name').value,
+        phone: document.getElementById('apply-phone').value,
+        email: document.getElementById('apply-email').value
+      })
+    });
+    const data = await res.json();
+    if (data.result === 'success') {
+      showMessage('success', 'Success! We will contact you on WhatsApp soon.');
+      e.target.reset();
+    } else throw new Error(data.message);
+  } catch (err) {
+    showMessage('error', 'Error submitting form. Please try again.');
+  }
+  btn.disabled = false; btn.textContent = 'Apply Now';
+});
+
+// --- LOGIN FORM ---
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('login-submit-btn');
+  btn.disabled = true; btn.textContent = 'Verifying...';
+  showMessage('info', 'Checking your details...');
+
+  // clear old session before verifying
+  localStorage.removeItem('movieroll_session');
+
+  try {
+    const res = await fetch(LOGIN_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value
+      })
+    });
+    const data = await res.json();
+    if (data.result === 'success') {
+      showMessage('success', 'Success! Redirecting...');
+      const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000;
+      localStorage.setItem('movieroll_session', JSON.stringify({ loggedIn: true, username: document.getElementById('username').value, expiry }));
+      setTimeout(() => location.href = 'homepage.html', 1000);
+    } else {
+      throw new Error(data.message);
     }
+  } catch (err) {
+    showMessage('error', err.message);
+  }
 
-    showLoginBtn.onclick = () => {
-      loginView.classList.remove('hidden'); applyView.classList.add('hidden');
-      showLoginBtn.classList.add('text-white', 'border-red-600'); showApplyBtn.classList.remove('text-white', 'border-red-600');
-      showApplyBtn.classList.add('text-gray-500'); messageBox.classList.add('hidden');
-    };
-
-    showApplyBtn.onclick = () => {
-      applyView.classList.remove('hidden'); loginView.classList.add('hidden');
-      showApplyBtn.classList.add('text-white', 'border-red-600'); showLoginBtn.classList.remove('text-white', 'border-red-600');
-      showLoginBtn.classList.add('text-gray-500'); messageBox.classList.add('hidden');
-    };
-
-    // --- APPLY FORM ---
-    document.getElementById('apply-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = document.getElementById('apply-submit-btn');
-      btn.disabled = true; btn.textContent = 'Submitting...';
-      showMessage('info', 'Sending your application...');
-      try {
-        const res = await fetch(APPLY_SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify({
-            name: document.getElementById('apply-name').value,
-            phone: document.getElementById('apply-phone').value,
-            email: document.getElementById('apply-email').value
-          })
-        });
-        const data = await res.json();
-        if (data.result === 'success') {
-          showMessage('success', 'Success! We will contact you on WhatsApp soon.');
-          e.target.reset();
-        } else throw new Error(data.message);
-      } catch (err) {
-        showMessage('error', 'Error submitting form. Please try again.');
-      }
-      btn.disabled = false; btn.textContent = 'Apply Now';
-    });
-
-    // --- LOGIN FORM ---
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = document.getElementById('login-submit-btn');
-      btn.disabled = true; btn.textContent = 'Verifying...';
-      showMessage('info', 'Checking your details...');
-      try {
-        const res = await fetch(LOGIN_SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify({
-            username: document.getElementById('username').value,
-            password: document.getElementById('password').value
-          })
-        });
-        const data = await res.json();
-        if (data.result === 'success') {
-          showMessage('success', 'Success! Redirecting...');
-          const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000;
-          localStorage.setItem('movieroll_session', JSON.stringify({ loggedIn: true, username: document.getElementById('username').value, expiry }));
-          setTimeout(() => location.href = 'homepage.html', 1000);
-        } else throw new Error(data.message);
-      } catch (err) {
-        showMessage('error', err.message);
-      }
-      btn.disabled = false; btn.textContent = 'Access & Watch';
-    });
-  </script>
+  btn.disabled = false; btn.textContent = 'Access & Watch';
+});
+</script>
 </body>
 </html>
