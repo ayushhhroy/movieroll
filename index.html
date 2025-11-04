@@ -33,7 +33,6 @@
 
     /* --- UPDATED: OTP Input Styles --- */
     .otp-input {
-      /* width: 2.75rem; */ /* Removed fixed width */
       width: 100%; /* Use full width of grid column */
       aspect-ratio: 1 / 1; /* Make it square */
       text-align: center;
@@ -56,7 +55,6 @@
     @media (min-width: 640px) {
       .otp-input {
         font-size: 1.5rem; /* 24px */
-        /* Height will be set by aspect-ratio */
       }
     }
 
@@ -148,11 +146,20 @@
           <h2 class="text-3xl sm:text-4xl font-bold text-center mb-8">Sign In to Your Account</h2>
           <div>
             <label class="block text-sm mb-2 font-medium text-gray-300">Username</label>
-            <input id="username" class="form-input" placeholder="Enter username" required />
+            <!-- UPDATED: Added attributes to disable suggestions -->
+            <input 
+              id="username" 
+              class="form-input" 
+              placeholder="Enter username" 
+              required
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+            />
           </div>
           <div>
             <label class="block text-sm mb-2 font-medium text-gray-300">Password (6-Digit PIN)</label>
-            <!-- UPDATED: Switched to grid for responsive boxes -->
             <div id="otp-container" class="grid grid-cols-6 gap-2 sm:gap-3">
               <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" required />
               <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" required />
@@ -176,7 +183,6 @@
           </div>
           <div>
             <label class="block text-sm mb-2 font-medium text-gray-300">WhatsApp Number</label>
-            <!-- UPDATED: type="tel" and inputmode="numeric" for number pad -->
             <input id="apply-phone" type="tel" inputmode="numeric" pattern="[0-9]{10}" title="Please enter a 10-digit number" class="form-input" placeholder="10-digit number" required />
           </div>
           <div>
@@ -371,8 +377,6 @@
         if (data.result === 'success') {
           showMessage('success', 'Success! Your access is confirmed.');
           
-          // ******** FIX WAS HERE ********
-          // Changed Date.Nnow() to Date.now()
           const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days 
           
           try {
