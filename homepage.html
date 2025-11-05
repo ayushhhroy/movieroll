@@ -75,9 +75,9 @@
     <!-- Header / Navbar -->
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-transparent transition-colors duration-300 ease-in-out p-4 sm:p-6">
         <div class="container mx-auto">
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center gap-4">
                 <!-- Logo -->
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-red-600 tracking-wider">MOVIEROLL</h1>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-red-600 tracking-wider flex-shrink-0">MOVIEROLL</h1>
                 
                 <!-- Desktop Navigation Links -->
                 <div class="hidden md:flex space-x-6">
@@ -87,12 +87,43 @@
                     <a href="#" class="font-extrabold text-white hover:text-gray-300 transition-colors">New & Popular</a>
                 </div>
                 
-                <!-- Mobile Menu Button (Hamburger Icon) -->
-                <div class="md:hidden">
-                    <button id="menu-toggle" class="text-white focus:outline-none">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
+                <!-- NEW: Search Bar -->
+                <div class="flex-grow max-w-xs hidden md:flex">
+                    <div class="relative w-full">
+                        <input id="desktop-search-input" type="text" placeholder="Search movies..." class="w-full bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent transition-all">
+                        <!-- UPDATE: Icon color changed to text-gray-200 for better visibility -->
+                        <button id="desktop-search-btn" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                            <svg class="w-5 h-5 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right-side Icons (Mobile) -->
+                <div class="flex items-center space-x-4">
+                    <!-- NEW: Mobile Search Icon -->
+                    <!-- UPDATE: Icon size increased to w-8 h-8 for better visibility -->
+                    <button id="mobile-search-open-btn" class="md:hidden text-white focus:outline-none">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </button>
+                    
+                    <!-- Mobile Menu Button (Hamburger Icon) -->
+                    <div class="md:hidden">
+                        <button id="menu-toggle" class="text-white focus:outline-none">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW: Mobile Search Bar (Initially Hidden) -->
+            <div id="mobile-search-bar" class="hidden md:hidden mt-4">
+                <div class="relative w-full">
+                    <input id="mobile-search-input" type="text" placeholder="Search movies..." class="w-full bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent transition-all">
+                    <!-- UPDATE: Icon color changed to text-gray-200 -->
+                    <button id="mobile-search-btn" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                        <svg class="w-5 h-5 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </button>
                 </div>
             </div>
@@ -151,47 +182,48 @@
                 <div class="movie-row flex overflow-x-auto overflow-y-hidden space-x-3 sm:space-x-4 p-2 -m-2">
                     
                     <!-- === MOVIE CARD (Size changed to w-36 sm:w-44 md:w-52) === -->
-                    <a href="animal.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                    <!-- NEW: Added 'movie-card' class and 'data-title' attribute -->
+                    <a href="animal.html" class="movie-card flex-shrink-0 w-36 sm:w-44 md:w-52 group" data-title="Animal">
                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                             <img src="animal-img.webp" alt="Animal" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Animal'">
                         </div>
                     </a>
                     <!-- === END MOVIE CARD === -->
 
-                    <a href="pathaan.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                    <a href="pathaan.html" class="movie-card flex-shrink-0 w-36 sm:w-44 md-w-52 group" data-title="Pathaan">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="pathan-img.webp" alt="Pathaan" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Pathaan'">
-                        </div>
+                             <img src="pathan-img.webp" alt="Pathaan" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Pathaan'">
+                         </div>
                     </a>
                     
-                    <a href="BrahmastraPartOneShiva.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                    <a href="BrahmastraPartOneShiva.html" class="movie-card flex-shrink-0 w-36 sm:w-44 md-w-52 group" data-title="Brahmastra Part One Shiva">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="brahmastra-img.webp" alt="Brahmastra" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Brahmastra'">
-                        </div>
+                             <img src="brahmastra-img.webp" alt="Brahmastra" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Brahmastra'">
+                         </div>
                     </a>
                     
-                    <a href="jawan.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                    <a href="jawan.html" class="movie-card flex-shrink-0 w-36 sm:w-44 md-w-52 group" data-title="Jawan">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="Jawan-img.webp" alt="Jawan" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Jawan'">
-                        </div>
+                             <img src="Jawan-img.webp" alt="Jawan" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Jawan'">
+                         </div>
                     </a>
                     
-                    <a href="#" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                    <a href="#" class="movie-card flex-shrink-0 w-36 sm:w-44 md-w-52 group" data-title="Tiger 3">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="tiger3.webp" alt="Movie 5" class="w-full object-cover aspect-[2/3]">
-                        </div>
+                             <img src="tiger3.webp" alt="Tiger 3" class="w-full object-cover aspect-[2/3]">
+                         </div>
                     </a>
                     
-                    <a href="tigerzindahai.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                    <a href="tigerzindahai.html" class="movie-card flex-shrink-0 w-36 sm:w-44 md-w-52 group" data-title="Tiger Zinda Hai">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="tigerzindahai-img.webp" alt="Movie 5" class="w-full object-cover aspect-[2/3]">
-                        </div>
+                             <img src="tigerzindahai-img.webp" alt="Tiger Zinda Hai" class="w-full object-cover aspect-[2/3]">
+                         </div>
                     </a>
                     
-                    <a href="ekthatiger.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                    <a href="ekthatiger.html" class="movie-card flex-shrink-0 w-36 sm:w-44 md-w-52 group" data-title="Ek Tha Tiger">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="ekthatiger-img.webp" alt="Movie 5" class="w-full object-cover aspect-[2/3]">
-                        </div>
+                             <img src="ekthatiger-img.webp" alt="Ek Tha Tiger" class="w-full object-cover aspect-[2/3]">
+                         </div>
                     </a>
                 </div>
             </div>
@@ -203,27 +235,27 @@
             <div class="relative">
                 <div class="movie-row flex overflow-x-auto overflow-y-hidden space-x-3 sm:space-x-4 p-2 -m-2">
                         
-                    <a href="kabirsingh.html" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                    <a href="kabirsingh.html" class="movie-card flex-shrink-0 w-36 sm:w-44 md-w-52 group" data-title="Kabir Singh">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="kabirsign-img.webp" alt="Action 1" class="w-full object-cover aspect-[2/3]">
-                        </div>
+                             <img src="kabirsign-img.webp" alt="Kabir Singh" class="w-full object-cover aspect-[2/3]">
+                         </div>
                     </a>
-                            
+                        
                     <!-- Example of more cards (size updated) -->
-                    <a href="#" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                    <a href="#" class="movie-card flex-shrink-0 w-36 sm:w-44 md-w-52 group" data-title="Movie B">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="https://placehold.co/400x600/222/555?text=Movie+B" alt="Movie B" class="w-full object-cover aspect-[2/3]">
-                        </div>
+                             <img src="https://placehold.co/400x600/222/555?text=Movie+B" alt="Movie B" class="w-full object-cover aspect-[2/3]">
+                         </div>
                     </a>
-                    <a href="#" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                    <a href="#" class="movie-card flex-shrink-0 w-36 sm:w-44 md-w-52 group" data-title="Movie C">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="https://placehold.co/400x600/222/555?text=Movie+C" alt="Movie C" class="w-full object-cover aspect-[2/3]">
-                        </div>
+                             <img src="https://placehold.co/400x600/222/555?text=Movie+C" alt="Movie C" class="w-full object-cover aspect-[2/3]">
+                         </div>
                     </a>
-                    <a href="#" class="flex-shrink-0 w-36 sm:w-44 md:w-52 group">
+                    <a href="#" class="movie-card flex-shrink-0 w-36 sm:w-44 md-w-52 group" data-title="Movie D">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                            <img src="https://placehold.co/400x600/222/555?text=Movie+D" alt="Movie D" class="w-full object-cover aspect-[2/3]">
-                        </div>
+                             <img src="https://placehold.co/400x600/222/555?text=Movie+D" alt="Movie D" class="w-full object-cover aspect-[2/3]">
+                         </div>
                     </a>
 
                 </div>
@@ -239,8 +271,27 @@
         </div>
     </footer>
 
+    <!-- NEW: Search Results Modal (Initially Hidden) -->
+    <!-- UPDATE: Added transition, opacity, and scale classes for animation -->
+    <div id="search-results-overlay" class="fixed inset-0 bg-[#141414]/95 backdrop-blur-md z-[999] hidden p-6 sm:p-8 pt-20 sm:pt-24 overflow-y-auto transition-all duration-300 ease-out opacity-0 scale-95">
+        <button id="close-search-btn" class="absolute top-5 right-5 text-gray-400 hover:text-white transition-colors focus:outline-none">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        <div class="container mx-auto max-w-4xl">
+            <h2 class="text-3xl font-bold mb-6 text-white">Search Results for "<span id="search-query-display"></span>"</h2>
+            <div id="search-results-content" class="flex flex-col gap-4">
+                <!-- Search results will be injected here by JavaScript -->
+            </div>
+        </div>
+    </div>
+    <!-- End Search Results Modal -->
+
+
     <!-- JavaScript for Mobile Menu Toggle & Animations -->
     <script>
+        // --- Global variable for movie data ---
+        let allMovies = [];
+
         // --- Mobile Menu Toggle ---
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -275,7 +326,7 @@
         }, 5000); // 5 seconds
 
 
-        // --- Page Load Animations & Auto-Scroll Initializer ---
+        // --- Page Load Animations & Initializers ---
         // 'load' event ka wait karega taaki images load ho jayein aur card ki width sahi mile
         window.addEventListener('load', () => {
             
@@ -317,6 +368,18 @@
                     });
                 });
             });
+
+            // 3. === NEW: Collect Movie Data for Search ===
+            const movieCards = document.querySelectorAll('.movie-card');
+            movieCards.forEach(card => {
+                allMovies.push({
+                    title: card.dataset.title, // 'data-title' attribute se
+                    href: card.href,
+                    // We can add image src here if we want to show images in search
+                    imageSrc: card.querySelector('img') ? card.querySelector('img').src : 'https://placehold.co/200x300/222/555?text=No+Image'
+                });
+            });
+            // console.log(allMovies); // Debugging ke liye
         });
 
 
@@ -374,6 +437,129 @@
                 startAutoScroll(row);
             }, 5000); // 5 seconds ka delay (changed from 15 to 5 for faster resume)
         }
+
+
+        // === NEW: SEARCH FUNCTIONALITY ===
+
+        // --- Get Search DOM Elements ---
+        const searchOverlay = document.getElementById('search-results-overlay');
+        const searchContent = document.getElementById('search-results-content');
+        const closeSearchBtn = document.getElementById('close-search-btn');
+        const searchQueryDisplay = document.getElementById('search-query-display');
+
+        const desktopSearchInput = document.getElementById('desktop-search-input');
+        const desktopSearchBtn = document.getElementById('desktop-search-btn');
+        
+        const mobileSearchOpenBtn = document.getElementById('mobile-search-open-btn');
+        const mobileSearchBar = document.getElementById('mobile-search-bar');
+        const mobileSearchInput = document.getElementById('mobile-search-input');
+        const mobileSearchBtn = document.getElementById('mobile-search-btn');
+
+        // --- Function to perform search ---
+        function performSearch(query) {
+            if (!query || query.trim() === "") {
+                return; // Khali search ko ignore karo
+            }
+
+            const lowerCaseQuery = query.toLowerCase().trim();
+            const searchResults = allMovies.filter(movie => 
+                movie.title.toLowerCase().includes(lowerCaseQuery)
+            );
+
+            // Update search query display
+            searchQueryDisplay.textContent = query;
+            // Clear previous results
+            searchContent.innerHTML = "";
+
+            if (searchResults.length > 0) {
+                // Movies mil gaye
+                searchResults.forEach(movie => {
+                    const resultHTML = `
+                        <a href="${movie.href}" class="flex items-center bg-gray-800/50 hover:bg-gray-700/80 p-3 rounded-lg transition-colors duration-200">
+                            <img src="${movie.imageSrc}" alt="${movie.title}" class="w-16 h-24 object-cover rounded-md" onerror="this.src='https://placehold.co/200x300/222/555?text=${movie.title}'">
+                            <h3 class="text-xl font-semibold text-white ml-4">${movie.title}</h3>
+                        </a>
+                    `;
+                    searchContent.innerHTML += resultHTML;
+                });
+            } else {
+                // Koi movie nahi mili
+                searchContent.innerHTML = `
+                    <div class="text-center text-gray-400 text-lg p-8">
+                        <p class="mb-2">The movie you searched for is not currently in our library.</p>
+                        <p class="font-semibold text-white">We are constantly expanding, and this title will be added soon.</p>
+                    </div>
+                `;
+            }
+
+            // === UPDATE: Show the search overlay WITH animation ===
+            // 1. Remove 'hidden' to make it part of the layout
+            searchOverlay.classList.remove('hidden');
+            // 2. Force browser reflow. Important step.
+            void searchOverlay.offsetWidth;
+            // 3. Remove opacity and scale classes to trigger the transition
+            searchOverlay.classList.remove('opacity-0');
+            searchOverlay.classList.remove('scale-95');
+        }
+
+        // --- Function to close search ---
+        function closeSearch() {
+            // === UPDATE: Close search WITH animation ===
+            // 1. Add opacity and scale classes to trigger fade-out
+            searchOverlay.classList.add('opacity-0');
+            searchOverlay.classList.add('scale-95');
+            
+            // 2. Wait for the animation to finish (300ms)
+            setTimeout(() => {
+                // 3. Add 'hidden' to remove it from layout
+                searchOverlay.classList.add('hidden');
+            }, 300); // This duration MUST match the CSS transition duration
+
+            // Clear inputs
+            desktopSearchInput.value = "";
+            mobileSearchInput.value = "";
+        }
+
+        // --- Event Listeners for Search ---
+
+        // Desktop Search
+        desktopSearchBtn.addEventListener('click', () => {
+            performSearch(desktopSearchInput.value);
+        });
+        desktopSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                performSearch(desktopSearchInput.value);
+            }
+        });
+
+        // Mobile Search Toggle
+        mobileSearchOpenBtn.addEventListener('click', () => {
+            mobileSearchBar.classList.toggle('hidden');
+            // Agar menu khula hai, toh use band kar do
+            if (!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Mobile Search
+        mobileSearchBtn.addEventListener('click', () => {
+            performSearch(mobileSearchInput.value);
+        });
+        mobileSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                performSearch(mobileSearchInput.value);
+            }
+        });
+
+        // Close Search
+        closeSearchBtn.addEventListener('click', closeSearch);
+        // Optional: Close by clicking overlay background (but not on content)
+        searchOverlay.addEventListener('click', (e) => {
+            if (e.target === searchOverlay) {
+                closeSearch();
+            }
+        });
+
     </script>
 
 </body>
