@@ -65,9 +65,13 @@
         <!-- Pulsing Logo -->
         <h1 class="text-4xl sm:text-5xl font-extrabold text-red-600 tracking-wider animate-pulse">MOVIEROLL</h1>
         
+        <!-- NEW: Loading Percentage -->
+        <p id="loading-percentage" class="text-xl text-gray-400 mt-4">Loading 0%</p>
+        
         <!-- Long Loading Notification (Initially Hidden) -->
+        <!-- UPDATE: Text changed and delay will be 10s via JS -->
         <div id="loading-notification" class="hidden mt-8 text-center text-gray-400 text-sm max-w-xs px-4">
-            <p>If you are opening this app for the first time, it might take a moment. Please do not close the app.</p>
+            <p>New content is loading.</p>
         </div>
     </div>
     <!-- End Preloader -->
@@ -198,7 +202,7 @@
 
                     <a href="deva.html" class="movie-card flex-shrink-0 w-36 sm:w-44 md-w-52 group" data-title="Deva">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
-                             <img src="deva-img.webp" alt="Deva" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Pathaan'">
+                             <img src="deva-img.webp" alt="Deva" class="w-full object-cover aspect-[2/3]" onerror="this.src='https://placehold.co/400x600/222/555?text=Deva'">
                          </div>
                     </a>
                     
@@ -258,7 +262,7 @@
                          </div>
                     </a>
 
-                     <a href="#" class="movie-card flex-shrink-0 w-36 sm:w-44 md-w-52 group" data-title="Saiyaara">
+                     <a href="saiyaara.html" class="movie-card flex-shrink-0 w-36 sm:w-44 md-w-52 group" data-title="Saiyaara">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                              <img src="saiyaara-img.webp" alt="Movie C" class="w-full object-cover aspect-[2/3]">
                          </div>
@@ -270,7 +274,7 @@
                              <img src="TuJhoothiMainMakkaar-img.webp" alt="Movie B" class="w-full object-cover aspect-[2/3]">
                          </div>
                     </a>
-                   
+                    
                     <a href="Gehraiyaan.html" class="movie-card flex-shrink-0 w-36 sm:w-44 md-w-52 group" data-title="Gehraiyaan">
                          <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                              <img src="Gehraiyaan-img.webp" alt="Movie D" class="w-full object-cover aspect-[2/3]">
@@ -295,8 +299,8 @@
                          </div>
                     </a>
 
-                    <a href="Mitron" class="movie-card flex-shrink-0 w-36 sm:w-44 md-w-52 group" data-title="Mitron">
-                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:brightness-110">
+                    <a href="Mitron.html" class="movie-card flex-shrink-0 w-36 sm:w-44 md-w-52 group" data-title="Mitron">
+                         <div class="rounded-lg overflow-hidden shadow-lg transition-all duration-3D00 ease-in-out group-hover:scale-105 group-hover:brightness-110">
                              <img src="Mitron-img.webp" alt="Movie D" class="w-full object-cover aspect-[2/3]">
                          </div>
                     </a>
@@ -371,36 +375,66 @@
         });
 
         // --- Preloader & Long Load Notification ---
+        // UPDATE: Get all preloader elements
+        const preloader = document.getElementById('preloader');
+        const loadingPercentageText = document.getElementById('loading-percentage');
+        const notification = document.getElementById('loading-notification');
+        
         // Timer for long loading notification
+        // UPDATE: Delay changed to 10 seconds
         const loadingTimer = setTimeout(() => {
-            const notification = document.getElementById('loading-notification');
             if (notification) {
                 // Use 'hidden' class from Tailwind
                 notification.classList.remove('hidden');
             }
-        }, 5000); // 5 seconds
+        }, 10000); // 10 seconds
+
+        // NEW: Fake Progress Logic
+        let loadingProgress = 0;
+        // This interval simulates the loading progress
+        let progressInterval = setInterval(() => {
+            if (loadingProgress < 70) {
+                loadingProgress += Math.random() * 5; // Faster, more random start
+            } else if (loadingProgress < 95) {
+                loadingProgress += Math.random() * 1; // Slower towards the end
+            }
+            // Cap at 95% before the 'load' event fires
+            if (loadingProgress > 95) loadingProgress = 95;
+            
+            if (loadingPercentageText) {
+                loadingPercentageText.textContent = `Loading ${Math.floor(loadingProgress)}%`;
+            }
+        }, 150); // Update every 150ms
 
 
         // --- Page Load Animations & Initializers ---
         // 'load' event ka wait karega taaki images load ho jayein aur card ki width sahi mile
         window.addEventListener('load', () => {
             
-            // === NEW PRELOADER LOGIC ===
-            // 1. Stop the long loading timer (since page has loaded)
+            // === UPDATED PRELOADER LOGIC ===
+            // 1. Stop all timers
             clearTimeout(loadingTimer);
+            clearInterval(progressInterval);
 
-            // 2. Hide the preloader
-            const preloader = document.getElementById('preloader');
-            if (preloader) {
-                // Add class to trigger fade-out animation
-                preloader.classList.add('preloader-hidden');
-                
-                // Optional: Remove from DOM after animation finishes
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 600); // Must be > transition duration (500ms)
+            // 2. Force progress to 100%
+            loadingProgress = 100;
+            if (loadingPercentageText) {
+                loadingPercentageText.textContent = 'Loading 100%';
             }
-            // === END NEW PRELOADER LOGIC ===
+
+            // 3. Hide the preloader (with a slight delay to show "100%")
+            setTimeout(() => {
+                if (preloader) {
+                    // Add class to trigger fade-out animation
+                    preloader.classList.add('preloader-hidden');
+                    
+                    // Optional: Remove from DOM after animation finishes
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                    }, 600); // Must be > transition duration (500ms)
+                }
+            }, 250); // Show 100% for 250ms
+            // === END UPDATED PRELOADER LOGIC ===
             
             // 1. Animations chalao
             const elements = document.querySelectorAll('.animate-on-load');
